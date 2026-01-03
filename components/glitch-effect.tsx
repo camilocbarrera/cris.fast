@@ -59,6 +59,8 @@ export function GlitchEffect() {
     }
 
     function nextFrame(currentTime: number) {
+      if (!context || !feImage || !canvas) return
+      
       if (frameCount >= maxFrames) {
         context.clearRect(0, 0, w, h)
         return
