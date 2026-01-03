@@ -9,6 +9,7 @@ import { ShaderBackground } from "@/components/shader-background"
 import { GrainOverlay } from "@/components/grain-overlay"
 import { ColorControlPanel } from "@/components/color-control-panel"
 import { TimePreviewSlider } from "@/components/time-preview-slider"
+import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
 
 const initialColorConfig = {
@@ -99,7 +100,7 @@ export default function Portfolio() {
         dotOpacity={colorConfig.dotOpacity}
       />
 
-      {SHOW_DEV_CONTROLS && (
+      {SHOW_DEV_CONTROLS ? (
         <>
           {showColorControls && (
             <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
@@ -112,6 +113,8 @@ export default function Portfolio() {
             onToggleColorControls={() => setShowColorControls(!showColorControls)}
           />
         </>
+      ) : (
+        <TimeIndicator timeOfDay={timePalette.timeOfDay} />
       )}
 
       {/* Content area */}
