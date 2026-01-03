@@ -1,65 +1,132 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState, useEffect, useRef } from "react"
+import { GlitchEffect } from "@/components/glitch-effect"
+import { BorderLines } from "@/components/border-lines"
+import { HoverZones } from "@/components/hover-zones"
+import { SocialLinks } from "@/components/social-links"
+import { ShaderBackground } from "@/components/shader-background"
+import { GrainOverlay } from "@/components/grain-overlay"
+import { ColorControlPanel } from "@/components/color-control-panel"
+import { TimePreviewSlider } from "@/components/time-preview-slider"
+import { useTimeContrast } from "@/hooks/use-time-contrast"
+
+const initialColorConfig = {
+  shaderColorA: "#050505",
+  shaderColorB: "#1a1a1a",
+  shaderBaseColor: "#2a2a2a",
+  shaderUpColor: "#181818",
+  shaderDownColor: "#030303",
+  shaderLeftColor: "#141414",
+  shaderRightColor: "#0a0a0a",
+  shaderIntensity: 0.6,
+  shaderOverlayOpacity: 0.25,
+  borderLineColor: "#888888",
+  borderLineOpacity: 0.35,
+  dotOpacity: 0.45,
+  selectionBg: "#2a2a2a",
+}
+
+const isProduction = process.env.NODE_ENV === "production"
+const SHOW_DEV_CONTROLS = !isProduction
+
+export default function Portfolio() {
+  const [spacing, setSpacing] = useState({ horizontal: 380, vertical: 500 })
+  const [isMobile, setIsMobile] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [colorConfig, setColorConfig] = useState(initialColorConfig)
+  const [previewHour, setPreviewHour] = useState<number | null>(null)
+  const [showColorControls, setShowColorControls] = useState(true)
+  
+  const timePalette = useTimeContrast(previewHour)
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--selection-bg", colorConfig.selectionBg)
+  }, [colorConfig.selectionBg])
+
+  useEffect(() => {
+    function calculateResponsiveSpacing() {
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+      const mobile = vw < 768
+
+      setIsMobile(mobile)
+
+      if (mobile) {
+        const contentHeight = contentRef.current?.offsetHeight || 150
+        const minPadding = 40
+        const maxHorizontal = Math.floor((vh - contentHeight) / 2 - minPadding)
+        const horizontalSpacing = Math.max(60, Math.min(maxHorizontal, vh * 0.15))
+        const verticalSpacing = Math.max(24, Math.min(vw * 0.08, 48))
+        setSpacing({ horizontal: horizontalSpacing, vertical: verticalSpacing })
+      } else {
+        const horizontalPercent = 380 / 1920
+        const verticalPercent = 500 / 1080
+        const horizontal = Math.max(150, Math.min(vh * 0.35, vh * horizontalPercent * 2))
+        const vertical = Math.max(100, Math.min(vw * 0.25, vw * verticalPercent))
+        setSpacing({ horizontal, vertical })
+      }
+    }
+
+    calculateResponsiveSpacing()
+    window.addEventListener("resize", calculateResponsiveSpacing)
+    return () => window.removeEventListener("resize", calculateResponsiveSpacing)
+  }, [])
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    <main className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden">
+      <ShaderBackground
+        colorA={timePalette.colorA}
+        colorB={timePalette.colorB}
+        baseColor={timePalette.baseColor}
+        upColor={timePalette.upColor}
+        downColor={timePalette.downColor}
+        leftColor={timePalette.leftColor}
+        rightColor={timePalette.rightColor}
+        intensity={colorConfig.shaderIntensity}
+        overlayOpacity={timePalette.overlayOpacity}
+      />
+
+      <GrainOverlay />
+      <GlitchEffect />
+
+      <HoverZones spacing={spacing} isMobile={isMobile} />
+
+      <BorderLines
+        spacing={spacing}
+        lineColor={colorConfig.borderLineColor}
+        lineOpacity={colorConfig.borderLineOpacity}
+        dotOpacity={colorConfig.dotOpacity}
+      />
+
+      {SHOW_DEV_CONTROLS && (
+        <>
+          {showColorControls && (
+            <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
+          )}
+          <TimePreviewSlider 
+            value={previewHour} 
+            onChange={setPreviewHour} 
+            timeOfDay={timePalette.timeOfDay}
+            showColorControls={showColorControls}
+            onToggleColorControls={() => setShowColorControls(!showColorControls)}
+          />
+        </>
+      )}
+
+      {/* Content area */}
+      <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-8 relative z-10">
+        <GlitchEffect.Text>
+          <div className="space-y-1 md:space-y-2">
+            <h1 className="text-xl md:text-3xl font-medium text-foreground text-balance">Cris</h1>
+            <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+              {"Software Engineer building data-intensive applications"}
+            </p>
+          </div>
+        </GlitchEffect.Text>
+
+        <SocialLinks />
+      </div>
+    </main>
+  )
 }
