@@ -114,7 +114,11 @@ export default function Portfolio() {
           />
         </>
       ) : (
-        <TimeIndicator timeOfDay={timePalette.timeOfDay} />
+        <TimeIndicator 
+          timeOfDay={timePalette.timeOfDay} 
+          value={previewHour}
+          onChange={setPreviewHour}
+        />
       )}
 
       {/* Content area */}
