@@ -16,7 +16,7 @@ interface ColorPalette {
 const palettes: Record<string, ColorPalette> = {
   deepNight: {
     colorA: "#020306",
-    colorB: "#06090f",
+    colorB: "#06090f", 
     baseColor: "#080c14",
     upColor: "#050810",
     downColor: "#010203",
