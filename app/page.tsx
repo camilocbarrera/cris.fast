@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { GlitchEffect } from "@/components/glitch-effect"
 import { BorderLines } from "@/components/border-lines"
 import { HoverZones } from "@/components/hover-zones"
@@ -11,6 +11,8 @@ import { ColorControlPanel } from "@/components/color-control-panel"
 import { TimePreviewSlider } from "@/components/time-preview-slider"
 import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
+import { useDeviceOrientation } from "@/hooks/use-device-orientation"
+import { RadiantConstellation } from "@/components/radiant-constellation"
 
 const initialColorConfig = {
   shaderColorA: "#050505",
@@ -20,8 +22,8 @@ const initialColorConfig = {
   shaderDownColor: "#030303",
   shaderLeftColor: "#141414",
   shaderRightColor: "#0a0a0a",
-  shaderIntensity: 0.6,
-  shaderOverlayOpacity: 0.25,
+  shaderIntensity: 0.8,
+  shaderOverlayOpacity: 0.1,
   borderLineColor: "#888888",
   borderLineOpacity: 0.35,
   dotOpacity: 0.45,
@@ -38,8 +40,28 @@ export default function Portfolio() {
   const [colorConfig, setColorConfig] = useState(initialColorConfig)
   const [previewHour, setPreviewHour] = useState<number | null>(null)
   const [showColorControls, setShowColorControls] = useState(true)
+  const [motionEnabled, setMotionEnabled] = useState(false)
   
   const timePalette = useTimeContrast(previewHour)
+  const { tiltX, tiltY, isSupported, hasPermission, requestPermission } = useDeviceOrientation()
+
+  // Auto-enable motion on Android, show prompt on iOS
+  const handleEnableMotion = useCallback(async () => {
+    if (hasPermission === true) {
+      setMotionEnabled(true)
+      return
+    }
+    const granted = await requestPermission()
+    if (granted) setMotionEnabled(true)
+  }, [hasPermission, requestPermission])
+
+  // Auto-request on first interaction for iOS
+  useEffect(() => {
+    if (!isSupported) return
+    if (hasPermission === true && !motionEnabled) {
+      setMotionEnabled(true)
+    }
+  }, [isSupported, hasPermission, motionEnabled])
 
   useEffect(() => {
     document.documentElement.style.setProperty("--selection-bg", colorConfig.selectionBg)
@@ -75,7 +97,10 @@ export default function Portfolio() {
   }, [])
 
   return (
-    <main className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden">
+    <main 
+      className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden"
+      onTouchStart={isSupported && hasPermission === null ? handleEnableMotion : undefined}
+    >
       <ShaderBackground
         colorA={timePalette.colorA}
         colorB={timePalette.colorB}
@@ -86,6 +111,14 @@ export default function Portfolio() {
         rightColor={timePalette.rightColor}
         intensity={colorConfig.shaderIntensity}
         overlayOpacity={timePalette.overlayOpacity}
+        tiltX={motionEnabled ? tiltX : 0}
+        tiltY={motionEnabled ? tiltY : 0}
+      />
+
+      <RadiantConstellation
+        tiltX={motionEnabled ? tiltX : 0}
+        tiltY={motionEnabled ? tiltY : 0}
+        opacity={0.5}
       />
 
       <GrainOverlay />
@@ -112,6 +145,40 @@ export default function Portfolio() {
             showColorControls={showColorControls}
             onToggleColorControls={() => setShowColorControls(!showColorControls)}
           />
+          {/* Dev: Enable Motion Button */}
+          {hasPermission !== true && isSupported && (
+            <button
+              onClick={handleEnableMotion}
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold rounded-full text-lg shadow-2xl shadow-emerald-500/40 animate-pulse"
+            >
+              Tap to Enable Motion
+            </button>
+          )}
+          {/* Dev: Gyroscope Debug */}
+          <div className="fixed top-4 right-4 z-50 bg-black/80 backdrop-blur-sm text-white text-xs font-mono p-3 rounded-lg space-y-1 min-w-[180px]">
+            <div className="text-emerald-400 font-bold mb-2">Gyroscope Debug</div>
+            <div>supported: <span className={isSupported ? "text-green-400" : "text-red-400"}>{String(isSupported)}</span></div>
+            <div>permission: <span className={hasPermission === true ? "text-green-400" : hasPermission === false ? "text-red-400" : "text-yellow-400"}>{String(hasPermission)}</span></div>
+            <div>enabled: <span className={motionEnabled ? "text-green-400" : "text-red-400"}>{String(motionEnabled)}</span></div>
+            <div className="border-t border-white/20 pt-1 mt-1">
+              <div>tiltX: <span className="text-cyan-400">{tiltX.toFixed(3)}</span></div>
+              <div>tiltY: <span className="text-cyan-400">{tiltY.toFixed(3)}</span></div>
+            </div>
+            <div className="relative w-full h-16 bg-white/10 rounded mt-2 overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-px h-full bg-white/30" />
+                <div className="absolute w-full h-px bg-white/30" />
+              </div>
+              <div 
+                className="absolute w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                style={{
+                  left: `calc(50% + ${tiltX * 40}px - 6px)`,
+                  top: `calc(50% + ${tiltY * 30}px - 6px)`,
+                  transition: "none"
+                }}
+              />
+            </div>
+          </div>
         </>
       ) : (
         <TimeIndicator 
