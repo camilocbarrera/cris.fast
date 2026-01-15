@@ -13,6 +13,7 @@ import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
 import { useDeviceOrientation } from "@/hooks/use-device-orientation"
 import { RadiantConstellation } from "@/components/radiant-constellation"
+import { P5GyroCanvas } from "@/components/p5-gyro-canvas"
 
 const initialColorConfig = {
   shaderColorA: "#050505",
@@ -113,6 +114,13 @@ export default function Portfolio() {
         overlayOpacity={timePalette.overlayOpacity}
         tiltX={motionEnabled ? tiltX : 0}
         tiltY={motionEnabled ? tiltY : 0}
+      />
+
+      <P5GyroCanvas
+        tiltX={tiltX}
+        tiltY={tiltY}
+        enabled={motionEnabled}
+        opacity={0.18}
       />
 
       <RadiantConstellation
