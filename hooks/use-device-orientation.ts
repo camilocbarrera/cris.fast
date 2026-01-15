@@ -37,11 +37,43 @@ export function useDeviceOrientation(config: Partial<PhysicsConfig> = {}): Devic
   const velocity = useRef({ x: 0, y: 0 })
   const animationFrame = useRef<number | null>(null)
   const isActive = useRef(false)
+  const lastOrientationAt = useRef(0)
 
   // Clamp value between -max and +max
   const clamp = useCallback((value: number, max: number) => {
     return Math.max(-max, Math.min(max, value))
   }, [])
+
+  const getScreenAngle = useCallback(() => {
+    if (typeof window === "undefined") return 0
+    const screenOrientation = window.screen?.orientation
+    if (screenOrientation && typeof screenOrientation.angle === "number") {
+      return screenOrientation.angle
+    }
+    const legacyAngle = (window as Window & { orientation?: number }).orientation
+    return typeof legacyAngle === "number" ? legacyAngle : 0
+  }, [])
+
+  const rotateByScreen = useCallback((x: number, y: number) => {
+    const angle = getScreenAngle()
+
+    switch (angle) {
+      case 90:
+        return { x: y, y: -x }
+      case -90:
+      case 270:
+        return { x: -y, y: x }
+      case 180:
+        return { x: -x, y: -y }
+      default:
+        return { x, y }
+    }
+  }, [getScreenAngle])
+
+  const setTargetTilt = useCallback((x: number, y: number) => {
+    targetTilt.current.x = clamp(x * sensitivity * 40, maxTilt)
+    targetTilt.current.y = clamp(y * sensitivity * 40, maxTilt)
+  }, [sensitivity, maxTilt, clamp])
 
   // Physics-based animation loop with spring damping
   const updatePhysics = useCallback(() => {
@@ -84,37 +116,76 @@ export function useDeviceOrientation(config: Partial<PhysicsConfig> = {}): Devic
     // Center around upright position (beta ~90 when holding phone upright)
     const normalizedBeta = (beta - 90) / 90
     const normalizedGamma = gamma / 90
+    const rotated = rotateByScreen(normalizedGamma, normalizedBeta)
 
-    // Apply sensitivity and clamp
-    targetTilt.current.x = clamp(normalizedGamma * sensitivity * 40, maxTilt)
-    targetTilt.current.y = clamp(normalizedBeta * sensitivity * 40, maxTilt)
-  }, [sensitivity, maxTilt, clamp])
+    lastOrientationAt.current = performance.now()
+    setTargetTilt(rotated.x, rotated.y)
+  }, [rotateByScreen, setTargetTilt])
+
+  const handleMotion = useCallback((event: DeviceMotionEvent) => {
+    const now = performance.now()
+    if (now - lastOrientationAt.current < 200) return
+
+    const acceleration = event.accelerationIncludingGravity || event.acceleration
+    if (!acceleration) return
+
+    const gx = acceleration.x ?? 0
+    const gy = acceleration.y ?? 0
+    const rotated = rotateByScreen(gx / 9.81, gy / 9.81)
+
+    setTargetTilt(rotated.x, rotated.y)
+  }, [rotateByScreen, setTargetTilt])
 
   // Request permission for iOS 13+
   const requestPermission = useCallback(async (): Promise<boolean> => {
-    // Check if permission API exists (iOS 13+)
-    if (typeof DeviceOrientationEvent !== "undefined" && 
-        "requestPermission" in DeviceOrientationEvent &&
-        typeof (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission === "function") {
-      try {
-        const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission()
-        const granted = response === "granted"
-        setHasPermission(granted)
-        return granted
-      } catch {
-        setHasPermission(false)
-        return false
-      }
+    const requestOrientationPermission =
+      typeof DeviceOrientationEvent !== "undefined" &&
+      "requestPermission" in DeviceOrientationEvent &&
+      typeof (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission === "function"
+        ? (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission
+        : null
+
+    const requestMotionPermission =
+      typeof DeviceMotionEvent !== "undefined" &&
+      "requestPermission" in DeviceMotionEvent &&
+      typeof (DeviceMotionEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission === "function"
+        ? (DeviceMotionEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission
+        : null
+
+    if (!requestOrientationPermission && !requestMotionPermission) {
+      setHasPermission(true)
+      return true
     }
-    
-    // Non-iOS or older versions don't need permission
-    setHasPermission(true)
-    return true
+
+    try {
+      if (requestOrientationPermission) {
+        const response = await requestOrientationPermission()
+        if (response === "granted") {
+          setHasPermission(true)
+          return true
+        }
+      }
+      if (requestMotionPermission) {
+        const response = await requestMotionPermission()
+        if (response === "granted") {
+          setHasPermission(true)
+          return true
+        }
+      }
+    } catch {
+      setHasPermission(false)
+      return false
+    }
+
+    setHasPermission(false)
+    return false
   }, [])
 
   // Check support and setup listeners
   useEffect(() => {
-    const supported = typeof window !== "undefined" && "DeviceOrientationEvent" in window
+    const supported = typeof window !== "undefined" && (
+      "DeviceOrientationEvent" in window || "DeviceMotionEvent" in window
+    )
     setIsSupported(supported)
 
     if (!supported) {
@@ -123,8 +194,11 @@ export function useDeviceOrientation(config: Partial<PhysicsConfig> = {}): Devic
     }
 
     // Check if permission is needed (iOS 13+)
-    const needsPermission = typeof DeviceOrientationEvent !== "undefined" && 
-      "requestPermission" in DeviceOrientationEvent
+    const needsPermission = (
+      typeof DeviceOrientationEvent !== "undefined" && "requestPermission" in DeviceOrientationEvent
+    ) || (
+      typeof DeviceMotionEvent !== "undefined" && "requestPermission" in DeviceMotionEvent
+    )
 
     if (!needsPermission) {
       // Android and older iOS don't need explicit permission
@@ -137,17 +211,25 @@ export function useDeviceOrientation(config: Partial<PhysicsConfig> = {}): Devic
     if (!isSupported || hasPermission !== true) return
 
     isActive.current = true
-    window.addEventListener("deviceorientation", handleOrientation, { passive: true })
+    if ("DeviceOrientationEvent" in window) {
+      window.addEventListener("deviceorientation", handleOrientation, { passive: true })
+      window.addEventListener("deviceorientationabsolute", handleOrientation, { passive: true })
+    }
+    if ("DeviceMotionEvent" in window) {
+      window.addEventListener("devicemotion", handleMotion, { passive: true })
+    }
     animationFrame.current = requestAnimationFrame(updatePhysics)
 
     return () => {
       isActive.current = false
       window.removeEventListener("deviceorientation", handleOrientation)
+      window.removeEventListener("deviceorientationabsolute", handleOrientation)
+      window.removeEventListener("devicemotion", handleMotion)
       if (animationFrame.current) {
         cancelAnimationFrame(animationFrame.current)
       }
     }
-  }, [isSupported, hasPermission, handleOrientation, updatePhysics])
+  }, [isSupported, hasPermission, handleOrientation, handleMotion, updatePhysics])
 
   return {
     tiltX,
