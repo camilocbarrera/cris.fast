@@ -108,8 +108,8 @@ export function TimePreviewSlider({ value, onChange, timeOfDay, showColorControl
           }}
           min={0}
           max={23.99}
-          step={0.05}
-          className="w-24"
+          step={0.01}
+          className="w-28 [&_[data-slot=slider-thumb]]:size-4 [&_[data-slot=slider-thumb]]:border-white/40 [&_[data-slot=slider-thumb]]:bg-white [&_[data-slot=slider-thumb]]:active:bg-orange-400 [&_[data-slot=slider-thumb]]:active:scale-110 [&_[data-slot=slider-thumb]]:active:ring-orange-400/30 [&_[data-slot=slider-track]]:bg-white/20 [&_[data-slot=slider-range]]:bg-gradient-to-r [&_[data-slot=slider-range]]:from-orange-500/60 [&_[data-slot=slider-range]]:to-orange-400/80"
         />
 
         <span className="text-white/70 font-mono w-14 text-center">{formatTime(displayValue)}</span>
