@@ -47,17 +47,17 @@ export function ShaderBackground({
   tiltX = 0,
   tiltY = 0,
 }: ShaderBackgroundProps) {
-  // Apply tilt-based color shifting for gyroscope effect
+  // Apply tilt-based color shifting for gyroscope effect - increased for visibility
   const tiltedColors = useMemo(() => {
-    const tiltFactor = 0.4
+    const tiltFactor = 0.8
     const xInfluence = tiltX * tiltFactor
     const yInfluence = tiltY * tiltFactor
-    
+
     return {
-      up: shiftColor(upColor, 1 + yInfluence * 0.5),
-      down: shiftColor(downColor, 1 - yInfluence * 0.5),
-      left: shiftColor(leftColor, 1 + xInfluence * 0.5),
-      right: shiftColor(rightColor, 1 - xInfluence * 0.5),
+      up: shiftColor(upColor, 1 + yInfluence * 1.2),
+      down: shiftColor(downColor, 1 - yInfluence * 0.8),
+      left: shiftColor(leftColor, 1 + xInfluence * 1.2),
+      right: shiftColor(rightColor, 1 - xInfluence * 0.8),
     }
   }, [upColor, downColor, leftColor, rightColor, tiltX, tiltY])
 

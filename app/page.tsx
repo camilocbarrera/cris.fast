@@ -13,6 +13,7 @@ import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
 import { useDeviceOrientation } from "@/hooks/use-device-orientation"
 import { RadiantConstellation } from "@/components/radiant-constellation"
+import { TiltIndicator } from "@/components/tilt-indicator"
 
 const initialColorConfig = {
   shaderColorA: "#050505",
@@ -41,28 +42,26 @@ export default function Portfolio() {
   const [previewHour, setPreviewHour] = useState<number | null>(null)
   const [showColorControls, setShowColorControls] = useState(true)
   const [motionEnabled, setMotionEnabled] = useState(false)
+  const [showTiltIndicator, setShowTiltIndicator] = useState(false)
   const [glitchKey, setGlitchKey] = useState(0)
 
   const timePalette = useTimeContrast(previewHour)
   const { tiltX, tiltY, isSupported, hasPermission, requestPermission } = useDeviceOrientation()
 
-  // Auto-enable motion on Android, show prompt on iOS
+  // Enable motion and show tilt indicator for feedback
   const handleEnableMotion = useCallback(async () => {
     if (hasPermission === true) {
       setMotionEnabled(true)
+      setShowTiltIndicator(true)
       return
     }
     const granted = await requestPermission()
-    if (granted) setMotionEnabled(true)
+    if (granted) {
+      setMotionEnabled(true)
+      setShowTiltIndicator(true)
+    }
   }, [hasPermission, requestPermission])
 
-  // Auto-request on first interaction for iOS
-  useEffect(() => {
-    if (!isSupported) return
-    if (hasPermission === true && !motionEnabled) {
-      setMotionEnabled(true)
-    }
-  }, [isSupported, hasPermission, motionEnabled])
 
   useEffect(() => {
     document.documentElement.style.setProperty("--selection-bg", colorConfig.selectionBg)
@@ -148,7 +147,7 @@ export default function Portfolio() {
             onToggleColorControls={() => setShowColorControls(!showColorControls)}
           />
           {/* Dev: Enable Motion Button */}
-          {hasPermission !== true && isSupported && (
+          {isSupported && !motionEnabled && (
             <button
               onClick={handleEnableMotion}
               className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold rounded-full text-lg shadow-2xl shadow-emerald-500/40 animate-pulse"
@@ -189,17 +188,24 @@ export default function Portfolio() {
             value={previewHour}
             onChange={setPreviewHour}
           />
-          {/* Subtle motion prompt for mobile in production */}
-          {isSupported && hasPermission !== true && !motionEnabled && (
+          {/* Motion prompt for mobile in production - shows until motion is enabled */}
+          {isSupported && !motionEnabled && (
             <button
               onClick={handleEnableMotion}
-              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 text-xs text-muted-foreground/60 hover:text-muted-foreground border border-muted-foreground/20 hover:border-muted-foreground/40 rounded-full backdrop-blur-sm transition-all"
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 text-sm font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 backdrop-blur-md transition-all animate-pulse"
             >
-              enable motion
+              ✨ enable motion
             </button>
           )}
         </>
       )}
+
+      {/* Tilt indicator - shows briefly when motion is first enabled */}
+      <TiltIndicator
+        tiltX={tiltX}
+        tiltY={tiltY}
+        visible={showTiltIndicator}
+      />
 
       {/* Content area */}
       <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-6 relative z-10">

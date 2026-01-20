@@ -126,11 +126,11 @@ export function RadiantConstellation({
 
       ctx.clearRect(0, 0, width, height)
 
-      // Draw constellation stars with parallax
+      // Draw constellation stars with parallax - increased movement for visibility
       stars.forEach((star) => {
-        const parallax = 0.2 + (star.size / 1.5) * 0.6
-        const x = star.x * width + currentTiltX * 8 * parallax
-        const y = star.y * height + currentTiltY * 6 * parallax
+        const parallax = 0.3 + (star.size / 1.5) * 0.8
+        const x = star.x * width + currentTiltX * 25 * parallax
+        const y = star.y * height + currentTiltY * 20 * parallax
 
         drawStar(x, y, star.size, star.blur, star.opacity * currentOpacity, star.color)
       })
