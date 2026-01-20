@@ -120,15 +120,21 @@ export function GlitchEffect() {
   )
 }
 
-GlitchEffect.Text = function GlitchText({ children }: { children: ReactNode }) {
+interface GlitchTextProps {
+  children: ReactNode
+  triggerKey?: number
+}
+
+GlitchEffect.Text = function GlitchText({ children, triggerKey = 0 }: GlitchTextProps) {
   const [isGlitching, setIsGlitching] = useState(true)
   const isMobile = useIsMobile()
 
   useEffect(() => {
+    setIsGlitching(true)
     const duration = isMobile ? 3500 : 4500
     const timer = setTimeout(() => setIsGlitching(false), duration)
     return () => clearTimeout(timer)
-  }, [isMobile])
+  }, [isMobile, triggerKey])
 
   return (
     <div

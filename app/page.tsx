@@ -13,7 +13,6 @@ import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
 import { useDeviceOrientation } from "@/hooks/use-device-orientation"
 import { RadiantConstellation } from "@/components/radiant-constellation"
-import { P5GyroCanvas } from "@/components/p5-gyro-canvas"
 
 const initialColorConfig = {
   shaderColorA: "#050505",
@@ -42,7 +41,8 @@ export default function Portfolio() {
   const [previewHour, setPreviewHour] = useState<number | null>(null)
   const [showColorControls, setShowColorControls] = useState(true)
   const [motionEnabled, setMotionEnabled] = useState(false)
-  
+  const [glitchKey, setGlitchKey] = useState(0)
+
   const timePalette = useTimeContrast(previewHour)
   const { tiltX, tiltY, isSupported, hasPermission, requestPermission } = useDeviceOrientation()
 
@@ -116,12 +116,6 @@ export default function Portfolio() {
         tiltY={motionEnabled ? tiltY : 0}
       />
 
-      <P5GyroCanvas
-        tiltX={tiltX}
-        tiltY={tiltY}
-        enabled={motionEnabled}
-        opacity={0.18}
-      />
 
       <RadiantConstellation
         tiltX={motionEnabled ? tiltX : 0}
@@ -189,18 +183,34 @@ export default function Portfolio() {
           </div>
         </>
       ) : (
-        <TimeIndicator 
-          timeOfDay={timePalette.timeOfDay} 
-          value={previewHour}
-          onChange={setPreviewHour}
-        />
+        <>
+          <TimeIndicator
+            timeOfDay={timePalette.timeOfDay}
+            value={previewHour}
+            onChange={setPreviewHour}
+          />
+          {/* Subtle motion prompt for mobile in production */}
+          {isSupported && hasPermission !== true && !motionEnabled && (
+            <button
+              onClick={handleEnableMotion}
+              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 text-xs text-muted-foreground/60 hover:text-muted-foreground border border-muted-foreground/20 hover:border-muted-foreground/40 rounded-full backdrop-blur-sm transition-all"
+            >
+              enable motion
+            </button>
+          )}
+        </>
       )}
 
       {/* Content area */}
-      <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-8 relative z-10">
-        <GlitchEffect.Text>
+      <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-6 relative z-10">
+        <GlitchEffect.Text triggerKey={glitchKey}>
           <div className="space-y-1 md:space-y-2">
-            <h1 className="text-xl md:text-3xl font-medium text-foreground text-balance">Cris</h1>
+            <h1
+              className="text-xl md:text-3xl font-medium text-foreground text-balance cursor-default"
+              onMouseEnter={() => setGlitchKey((k) => k + 1)}
+            >
+              Cris
+            </h1>
             <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
               {"Software Engineer building data-intensive applications"}
             </p>

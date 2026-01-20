@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useMemo } from "react"
+import { useRef, useEffect, useMemo, useCallback } from "react"
 
 interface RadiantConstellationProps {
   tiltX?: number
@@ -29,29 +29,44 @@ const starColors = [
   "90, 90, 90",    // charcoal
 ]
 
-export function RadiantConstellation({ 
-  tiltX = 0, 
+export function RadiantConstellation({
+  tiltX = 0,
   tiltY = 0,
-  opacity = 0.5 
+  opacity = 0.5
 }: RadiantConstellationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const tiltRef = useRef({ x: tiltX, y: tiltY, opacity })
+  const needsRedrawRef = useRef(true)
   const animationRef = useRef<number>(0)
+
+  // Update refs when props change
+  useEffect(() => {
+    const changed =
+      tiltRef.current.x !== tiltX ||
+      tiltRef.current.y !== tiltY ||
+      tiltRef.current.opacity !== opacity
+
+    if (changed) {
+      tiltRef.current = { x: tiltX, y: tiltY, opacity }
+      needsRedrawRef.current = true
+    }
+  }, [tiltX, tiltY, opacity])
 
   // Generate scattered noise particles
   const stars = useMemo(() => {
     const generated: Star[] = []
     const count = 300
-    
+
     for (let i = 0; i < count; i++) {
       const x = Math.random()
       const y = Math.random()
-      
+
       // Mostly tiny, few slightly larger
       const isLarge = Math.random() > 0.92
       const isMedium = !isLarge && Math.random() > 0.75
-      
+
       const color = starColors[Math.floor(Math.random() * starColors.length)]
-      
+
       generated.push({
         x,
         y,
@@ -61,7 +76,7 @@ export function RadiantConstellation({
         color
       })
     }
-    
+
     return generated
   }, [])
 
@@ -78,6 +93,7 @@ export function RadiantConstellation({
       canvas.width = rect.width * dpr
       canvas.height = rect.height * dpr
       ctx.scale(dpr, dpr)
+      needsRedrawRef.current = true
     }
 
     resize()
@@ -97,19 +113,26 @@ export function RadiantConstellation({
     }
 
     const draw = () => {
+      if (!needsRedrawRef.current) {
+        animationRef.current = requestAnimationFrame(draw)
+        return
+      }
+
+      needsRedrawRef.current = false
       const rect = canvas.getBoundingClientRect()
       const width = rect.width
       const height = rect.height
+      const { x: currentTiltX, y: currentTiltY, opacity: currentOpacity } = tiltRef.current
 
       ctx.clearRect(0, 0, width, height)
 
       // Draw constellation stars with parallax
-      stars.forEach((star, i) => {
+      stars.forEach((star) => {
         const parallax = 0.2 + (star.size / 1.5) * 0.6
-        const x = star.x * width + tiltX * 8 * parallax
-        const y = star.y * height + tiltY * 6 * parallax
+        const x = star.x * width + currentTiltX * 8 * parallax
+        const y = star.y * height + currentTiltY * 6 * parallax
 
-        drawStar(x, y, star.size, star.blur, star.opacity * opacity, star.color)
+        drawStar(x, y, star.size, star.blur, star.opacity * currentOpacity, star.color)
       })
 
       animationRef.current = requestAnimationFrame(draw)
@@ -121,7 +144,7 @@ export function RadiantConstellation({
       window.removeEventListener("resize", resize)
       cancelAnimationFrame(animationRef.current)
     }
-  }, [stars, tiltX, tiltY, opacity])
+  }, [stars])
 
   return (
     <canvas
