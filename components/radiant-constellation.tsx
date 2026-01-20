@@ -1,10 +1,8 @@
 "use client"
 
-import { useRef, useEffect, useMemo, useCallback } from "react"
+import { useRef, useEffect, useMemo } from "react"
 
 interface RadiantConstellationProps {
-  tiltX?: number
-  tiltY?: number
   opacity?: number
 }
 
@@ -30,27 +28,9 @@ const starColors = [
 ]
 
 export function RadiantConstellation({
-  tiltX = 0,
-  tiltY = 0,
   opacity = 0.5
 }: RadiantConstellationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const tiltRef = useRef({ x: tiltX, y: tiltY, opacity })
-  const needsRedrawRef = useRef(true)
-  const animationRef = useRef<number>(0)
-
-  // Update refs when props change
-  useEffect(() => {
-    const changed =
-      tiltRef.current.x !== tiltX ||
-      tiltRef.current.y !== tiltY ||
-      tiltRef.current.opacity !== opacity
-
-    if (changed) {
-      tiltRef.current = { x: tiltX, y: tiltY, opacity }
-      needsRedrawRef.current = true
-    }
-  }, [tiltX, tiltY, opacity])
 
   // Generate scattered noise particles
   const stars = useMemo(() => {
@@ -93,7 +73,6 @@ export function RadiantConstellation({
       canvas.width = rect.width * dpr
       canvas.height = rect.height * dpr
       ctx.scale(dpr, dpr)
-      needsRedrawRef.current = true
     }
 
     resize()
@@ -113,45 +92,32 @@ export function RadiantConstellation({
     }
 
     const draw = () => {
-      if (!needsRedrawRef.current) {
-        animationRef.current = requestAnimationFrame(draw)
-        return
-      }
-
-      needsRedrawRef.current = false
       const rect = canvas.getBoundingClientRect()
       const width = rect.width
       const height = rect.height
-      const { x: currentTiltX, y: currentTiltY, opacity: currentOpacity } = tiltRef.current
 
       ctx.clearRect(0, 0, width, height)
 
-      // Draw constellation stars with parallax - increased movement for visibility
       stars.forEach((star) => {
-        const parallax = 0.3 + (star.size / 1.5) * 0.8
-        const x = star.x * width + currentTiltX * 25 * parallax
-        const y = star.y * height + currentTiltY * 20 * parallax
-
-        drawStar(x, y, star.size, star.blur, star.opacity * currentOpacity, star.color)
+        const x = star.x * width
+        const y = star.y * height
+        drawStar(x, y, star.size, star.blur, star.opacity * opacity, star.color)
       })
-
-      animationRef.current = requestAnimationFrame(draw)
     }
 
     draw()
 
     return () => {
       window.removeEventListener("resize", resize)
-      cancelAnimationFrame(animationRef.current)
     }
-  }, [stars])
+  }, [stars, opacity])
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-[1] pointer-events-none"
-      style={{ 
-        width: "100%", 
+      style={{
+        width: "100%",
         height: "100%",
         mixBlendMode: "screen"
       }}

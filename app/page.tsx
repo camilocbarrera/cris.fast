@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import { GlitchEffect } from "@/components/glitch-effect"
 import { BorderLines } from "@/components/border-lines"
 import { HoverZones } from "@/components/hover-zones"
@@ -11,9 +11,7 @@ import { ColorControlPanel } from "@/components/color-control-panel"
 import { TimePreviewSlider } from "@/components/time-preview-slider"
 import { TimeIndicator } from "@/components/time-indicator"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
-import { useDeviceOrientation } from "@/hooks/use-device-orientation"
 import { RadiantConstellation } from "@/components/radiant-constellation"
-import { TiltIndicator } from "@/components/tilt-indicator"
 
 const initialColorConfig = {
   shaderColorA: "#050505",
@@ -41,27 +39,9 @@ export default function Portfolio() {
   const [colorConfig, setColorConfig] = useState(initialColorConfig)
   const [previewHour, setPreviewHour] = useState<number | null>(null)
   const [showColorControls, setShowColorControls] = useState(true)
-  const [motionEnabled, setMotionEnabled] = useState(false)
-  const [showTiltIndicator, setShowTiltIndicator] = useState(false)
   const [glitchKey, setGlitchKey] = useState(0)
 
   const timePalette = useTimeContrast(previewHour)
-  const { tiltX, tiltY, isSupported, hasPermission, requestPermission } = useDeviceOrientation()
-
-  // Enable motion and show tilt indicator for feedback
-  const handleEnableMotion = useCallback(async () => {
-    if (hasPermission === true) {
-      setMotionEnabled(true)
-      setShowTiltIndicator(true)
-      return
-    }
-    const granted = await requestPermission()
-    if (granted) {
-      setMotionEnabled(true)
-      setShowTiltIndicator(true)
-    }
-  }, [hasPermission, requestPermission])
-
 
   useEffect(() => {
     document.documentElement.style.setProperty("--selection-bg", colorConfig.selectionBg)
@@ -97,10 +77,7 @@ export default function Portfolio() {
   }, [])
 
   return (
-    <main 
-      className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden"
-      onTouchStart={isSupported && hasPermission === null ? handleEnableMotion : undefined}
-    >
+    <main className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden">
       <ShaderBackground
         colorA={timePalette.colorA}
         colorB={timePalette.colorB}
@@ -111,16 +88,9 @@ export default function Portfolio() {
         rightColor={timePalette.rightColor}
         intensity={colorConfig.shaderIntensity}
         overlayOpacity={timePalette.overlayOpacity}
-        tiltX={motionEnabled ? tiltX : 0}
-        tiltY={motionEnabled ? tiltY : 0}
       />
 
-
-      <RadiantConstellation
-        tiltX={motionEnabled ? tiltX : 0}
-        tiltY={motionEnabled ? tiltY : 0}
-        opacity={0.5}
-      />
+      <RadiantConstellation opacity={0.5} />
 
       <GrainOverlay />
       <GlitchEffect />
@@ -139,73 +109,21 @@ export default function Portfolio() {
           {showColorControls && (
             <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
           )}
-          <TimePreviewSlider 
-            value={previewHour} 
-            onChange={setPreviewHour} 
+          <TimePreviewSlider
+            value={previewHour}
+            onChange={setPreviewHour}
             timeOfDay={timePalette.timeOfDay}
             showColorControls={showColorControls}
             onToggleColorControls={() => setShowColorControls(!showColorControls)}
           />
-          {/* Dev: Enable Motion Button */}
-          {isSupported && !motionEnabled && (
-            <button
-              onClick={handleEnableMotion}
-              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] px-8 py-4 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold rounded-full text-lg shadow-2xl shadow-emerald-500/40 animate-pulse"
-            >
-              Tap to Enable Motion
-            </button>
-          )}
-          {/* Dev: Gyroscope Debug */}
-          <div className="fixed top-4 right-4 z-50 bg-black/80 backdrop-blur-sm text-white text-xs font-mono p-3 rounded-lg space-y-1 min-w-[180px]">
-            <div className="text-emerald-400 font-bold mb-2">Gyroscope Debug</div>
-            <div>supported: <span className={isSupported ? "text-green-400" : "text-red-400"}>{String(isSupported)}</span></div>
-            <div>permission: <span className={hasPermission === true ? "text-green-400" : hasPermission === false ? "text-red-400" : "text-yellow-400"}>{String(hasPermission)}</span></div>
-            <div>enabled: <span className={motionEnabled ? "text-green-400" : "text-red-400"}>{String(motionEnabled)}</span></div>
-            <div className="border-t border-white/20 pt-1 mt-1">
-              <div>tiltX: <span className="text-cyan-400">{tiltX.toFixed(3)}</span></div>
-              <div>tiltY: <span className="text-cyan-400">{tiltY.toFixed(3)}</span></div>
-            </div>
-            <div className="relative w-full h-16 bg-white/10 rounded mt-2 overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-px h-full bg-white/30" />
-                <div className="absolute w-full h-px bg-white/30" />
-              </div>
-              <div 
-                className="absolute w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
-                style={{
-                  left: `calc(50% + ${tiltX * 40}px - 6px)`,
-                  top: `calc(50% + ${tiltY * 30}px - 6px)`,
-                  transition: "none"
-                }}
-              />
-            </div>
-          </div>
         </>
       ) : (
-        <>
-          <TimeIndicator
-            timeOfDay={timePalette.timeOfDay}
-            value={previewHour}
-            onChange={setPreviewHour}
-          />
-          {/* Motion prompt for mobile in production - shows until motion is enabled */}
-          {isSupported && !motionEnabled && (
-            <button
-              onClick={handleEnableMotion}
-              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[60] px-6 py-3 text-sm font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 backdrop-blur-md transition-all animate-pulse"
-            >
-              ✨ enable motion
-            </button>
-          )}
-        </>
+        <TimeIndicator
+          timeOfDay={timePalette.timeOfDay}
+          value={previewHour}
+          onChange={setPreviewHour}
+        />
       )}
-
-      {/* Tilt indicator - shows briefly when motion is first enabled */}
-      <TiltIndicator
-        tiltX={tiltX}
-        tiltY={tiltY}
-        visible={showTiltIndicator}
-      />
 
       {/* Content area */}
       <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-6 relative z-10">
