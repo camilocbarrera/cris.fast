@@ -2,29 +2,36 @@
 
 import { Shader, ChromaFlow, Swirl } from "shaders/react"
 
+interface Palette {
+  colorA: string
+  colorB: string
+  baseColor: string
+  upColor: string
+  downColor: string
+  leftColor: string
+  rightColor: string
+}
+
 interface ShaderBackgroundProps {
-  colorA?: string
-  colorB?: string
-  baseColor?: string
-  upColor?: string
-  downColor?: string
-  leftColor?: string
-  rightColor?: string
+  palette?: Palette
   intensity?: number
   overlayOpacity?: number
 }
 
 export function ShaderBackground({
-  colorA = "#1c2838",
-  colorB = "#385070",
-  baseColor = "#5070a0",
-  upColor = "#406088",
-  downColor = "#101418",
-  leftColor = "#2c3c58",
-  rightColor = "#243048",
+  palette,
   intensity = 1,
   overlayOpacity = 0.1,
 }: ShaderBackgroundProps) {
+  // Default fallback colors (deep space theme)
+  const colorA = palette?.colorA ?? "#0a0a1a"
+  const colorB = palette?.colorB ?? "#1a1a3a"
+  const baseColor = palette?.baseColor ?? "#0d1025"
+  const upColor = palette?.upColor ?? "#1a1a4a"
+  const downColor = palette?.downColor ?? "#050508"
+  const leftColor = palette?.leftColor ?? "#12122a"
+  const rightColor = palette?.rightColor ?? "#0f0f20"
+
   return (
     <div className="fixed inset-0 z-0" style={{ contain: "strict" }}>
       <Shader className="h-full w-full">

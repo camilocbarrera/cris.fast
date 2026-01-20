@@ -79,18 +79,12 @@ export default function Portfolio() {
   return (
     <main className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden">
       <ShaderBackground
-        colorA={timePalette.colorA}
-        colorB={timePalette.colorB}
-        baseColor={timePalette.baseColor}
-        upColor={timePalette.upColor}
-        downColor={timePalette.downColor}
-        leftColor={timePalette.leftColor}
-        rightColor={timePalette.rightColor}
+        palette={timePalette}
         intensity={colorConfig.shaderIntensity}
         overlayOpacity={timePalette.overlayOpacity}
       />
 
-      <RadiantConstellation opacity={0.5} />
+      <RadiantConstellation opacity={0.5} starColors={timePalette.starColors} />
 
       <GrainOverlay />
       <GlitchEffect />

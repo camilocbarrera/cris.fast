@@ -4,6 +4,7 @@ import { useRef, useEffect, useMemo } from "react"
 
 interface RadiantConstellationProps {
   opacity?: number
+  starColors?: string[]
 }
 
 interface Star {
@@ -12,27 +13,26 @@ interface Star {
   size: number
   blur: number
   opacity: number
-  color: string
+  colorIndex: number // Store index instead of color for dynamic updates
 }
 
-// Dark grey/black noise palette
-const starColors = [
-  "180, 180, 180", // light grey
-  "140, 140, 140", // medium grey
-  "100, 100, 100", // dark grey
-  "80, 80, 80",    // darker grey
-  "60, 60, 60",    // very dark
-  "200, 200, 200", // pale grey
-  "120, 120, 120", // mid grey
-  "90, 90, 90",    // charcoal
+// Default stellar colors (used as fallback)
+const defaultStarColors = [
+  "200, 220, 255", // Blue-white giants
+  "255, 240, 220", // Warm white stars
+  "180, 180, 220", // Cool distant stars
+  "255, 200, 150", // Orange giants
+  "220, 180, 255", // Purple nebula glow
+  "150, 200, 255", // Bright blue stars
 ]
 
 export function RadiantConstellation({
-  opacity = 0.5
+  opacity = 0.5,
+  starColors = defaultStarColors
 }: RadiantConstellationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // Generate scattered noise particles
+  // Generate scattered noise particles (positions only, colors are dynamic)
   const stars = useMemo(() => {
     const generated: Star[] = []
     const count = 300
@@ -45,15 +45,13 @@ export function RadiantConstellation({
       const isLarge = Math.random() > 0.92
       const isMedium = !isLarge && Math.random() > 0.75
 
-      const color = starColors[Math.floor(Math.random() * starColors.length)]
-
       generated.push({
         x,
         y,
         size: isLarge ? 0.5 + Math.random() * 0.3 : isMedium ? 0.3 + Math.random() * 0.2 : 0.15 + Math.random() * 0.15,
         blur: isLarge ? 0.8 + Math.random() * 0.5 : 0.2 + Math.random() * 0.3,
         opacity: isLarge ? 0.4 + Math.random() * 0.3 : isMedium ? 0.2 + Math.random() * 0.2 : 0.08 + Math.random() * 0.15,
-        color
+        colorIndex: Math.floor(Math.random() * 6) // 6 color slots
       })
     }
 
@@ -101,7 +99,9 @@ export function RadiantConstellation({
       stars.forEach((star) => {
         const x = star.x * width
         const y = star.y * height
-        drawStar(x, y, star.size, star.blur, star.opacity * opacity, star.color)
+        // Get color from current palette using stored index
+        const color = starColors[star.colorIndex % starColors.length]
+        drawStar(x, y, star.size, star.blur, star.opacity * opacity, color)
       })
     }
 
@@ -110,7 +110,7 @@ export function RadiantConstellation({
     return () => {
       window.removeEventListener("resize", resize)
     }
-  }, [stars, opacity])
+  }, [stars, opacity, starColors])
 
   return (
     <canvas
