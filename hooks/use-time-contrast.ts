@@ -15,237 +15,238 @@ interface ColorPalette {
   accentGlow: string
 }
 
-// Stellar color palettes - based on real astronomical phenomena
+// Stellar color palette based on deep indigo cosmic theme (darker variant)
+// Base colors: #7179C6 (accent), #212652, #2A2D4C, #11142C (darkest), #212654
 const palettes: Record<string, ColorPalette> = {
-  // 0-4am: Deep Space - The darkest void with distant galaxies
+  // 0-4am: Deep Space - The darkest void
   deepSpace: {
-    colorA: "#0a0a1a",      // Near black with blue hint
-    colorB: "#1a1a3a",      // Deep space blue
-    baseColor: "#0d1025",   // Cosmic void
-    upColor: "#1a1a4a",     // Distant nebula glow
-    downColor: "#050508",   // Pure darkness
-    leftColor: "#12122a",   // Starfield edge
-    rightColor: "#0f0f20",  // Galaxy arm
-    overlayOpacity: 0.05,
+    colorA: "#08091A",      // Darkest void
+    colorB: "#0E1125",      // Slightly lighter
+    baseColor: "#0A0C1E",   // Deep base
+    upColor: "#121630",     // Subtle glow above
+    downColor: "#040510",   // Pure darkness
+    leftColor: "#0B0E22",   // Edge dark
+    rightColor: "#090C1C",  // Galaxy arm
+    overlayOpacity: 0.08,
     starColors: [
-      "200, 220, 255",      // Blue-white giants
-      "255, 240, 220",      // Warm white stars
-      "180, 180, 220",      // Cool distant stars
-      "255, 200, 150",      // Orange giants
-      "220, 180, 255",      // Purple nebula glow
-      "150, 200, 255",      // Bright blue stars
+      "90, 97, 158",        // #7179C6 dimmed
+      "110, 120, 175",      // Muted blue
+      "80, 88, 145",        // Deep blue
+      "125, 130, 180",      // Soft periwinkle
+      "70, 80, 135",        // Very deep
+      "100, 110, 165",      // Mid blue
     ],
-    accentGlow: "#4a3a8a",
+    accentGlow: "#4A5080",
   },
 
   // 4-5:30am: Blue Hour - Pre-dawn stillness
   blueHour: {
-    colorA: "#0d1028",      // Deep blue
-    colorB: "#1a1840",      // Twilight blue
-    baseColor: "#121530",   // Pre-dawn
-    upColor: "#1e1c4a",     // Sky lightening
-    downColor: "#06060c",   // Ground dark
-    leftColor: "#141430",   // Eastern hint
-    rightColor: "#101025",  // Western dark
-    overlayOpacity: 0.04,
+    colorA: "#0C0E28",      // Deep blue
+    colorB: "#121535",      // Twilight blue
+    baseColor: "#0E112A",   // Pre-dawn
+    upColor: "#181C3C",     // Sky lightening
+    downColor: "#060818",   // Ground dark
+    leftColor: "#10132E",   // Eastern hint
+    rightColor: "#0D1025",  // Western dark
+    overlayOpacity: 0.07,
     starColors: [
-      "180, 200, 255",      // Fading blue stars
-      "200, 180, 240",      // Violet morning
-      "220, 210, 255",      // Cool white
-      "160, 180, 230",      // Pale blue
-      "190, 170, 220",      // Soft purple
-      "210, 200, 240",      // Lavender
+      "95, 105, 160",       // Fading blue
+      "110, 115, 170",      // Soft periwinkle
+      "80, 92, 150",        // Cool blue
+      "120, 125, 175",      // Pale blue
+      "88, 96, 155",        // Mid tone
+      "105, 112, 168",      // Light accent
     ],
-    accentGlow: "#3a4090",
+    accentGlow: "#3E4578",
   },
 
-  // 5:30-6:30am: Cosmic Dawn - First light piercing the void
+  // 5:30-6:30am: Cosmic Dawn - First light
   dawn: {
-    colorA: "#1a1025",      // Deep purple-blue
-    colorB: "#2a1a3a",      // Twilight purple
-    baseColor: "#251530",   // Pre-dawn violet
-    upColor: "#3a2040",     // Rising magenta
-    downColor: "#0a0812",   // Lingering night
-    leftColor: "#201a35",   // Blending horizon
-    rightColor: "#2a1530",  // First light edge
-    overlayOpacity: 0.03,
+    colorA: "#101430",      // Purple-blue
+    colorB: "#181C3E",      // Twilight purple
+    baseColor: "#121635",   // Pre-dawn violet
+    upColor: "#1E2248",     // Rising glow
+    downColor: "#08091A",   // Lingering night
+    leftColor: "#151938",   // Blending horizon
+    rightColor: "#111432",  // First light edge
+    overlayOpacity: 0.06,
     starColors: [
-      "255, 180, 200",      // Pink dawn stars
-      "200, 150, 220",      // Violet fading
-      "255, 200, 180",      // Warm awakening
-      "180, 160, 200",      // Twilight remnants
-      "255, 220, 200",      // Golden hints
-      "220, 180, 220",      // Soft purple
+      "105, 110, 165",      // Dawn blue
+      "120, 125, 172",      // Lighter
+      "92, 100, 155",       // Cool tone
+      "128, 132, 180",      // Pale glow
+      "112, 118, 168",      // Mid accent
+      "100, 108, 160",      // Soft blue
     ],
-    accentGlow: "#6a3a6a",
+    accentGlow: "#505890",
   },
 
-  // 6:30-8am: Nebula Rise - Like the Orion Nebula awakening
+  // 6:30-8am: Nebula Rise - Morning awakening
   sunrise: {
-    colorA: "#2a1a2a",      // Deep magenta-brown
-    colorB: "#4a2a3a",      // Dusty rose nebula
-    baseColor: "#3a2030",   // Warm nebula core
-    upColor: "#5a3040",     // Rising cosmic dust
-    downColor: "#1a1018",   // Fading darkness
-    leftColor: "#352535",   // Nebula edge
-    rightColor: "#402a35",  // Stellar nursery
-    overlayOpacity: 0.02,
-    starColors: [
-      "255, 200, 150",      // Young orange stars
-      "255, 180, 180",      // Pink protostars
-      "255, 220, 180",      // Golden newborns
-      "220, 180, 200",      // Rose tint
-      "255, 240, 200",      // Bright yellow
-      "240, 200, 180",      // Warm amber
-    ],
-    accentGlow: "#8a4a5a",
-  },
-
-  // 8-11am: Solar Corona morning
-  morning: {
-    colorA: "#252018",      // Warm brown
-    colorB: "#403520",      // Golden dust
-    baseColor: "#352a20",   // Morning warmth
-    upColor: "#4a4030",     // Corona glow
-    downColor: "#151210",   // Soft shadow
-    leftColor: "#302820",   // Amber edge
-    rightColor: "#382e20",  // Gold rim
-    overlayOpacity: 0.01,
-    starColors: [
-      "255, 240, 200",      // Solar white
-      "255, 220, 160",      // Bright gold
-      "255, 200, 130",      // Amber
-      "250, 245, 220",      // Warm cream
-      "240, 220, 180",      // Light gold
-      "255, 230, 190",      // Soft gold
-    ],
-    accentGlow: "#9a7a4a",
-  },
-
-  // 11am-2pm: Stellar Noon - Peak brightness
-  midday: {
-    colorA: "#202428",      // Cool steel
-    colorB: "#303840",      // Bright cosmic
-    baseColor: "#282c35",   // Clear space
-    upColor: "#3a4048",     // Zenith light
-    downColor: "#121418",   // Grounded shadow
-    leftColor: "#252a30",   // Cool side
-    rightColor: "#2a3038",  // Bright edge
-    overlayOpacity: 0.0,
-    starColors: [
-      "255, 255, 255",      // Pure white
-      "220, 240, 255",      // Blue-white
-      "255, 250, 240",      // Warm white
-      "200, 220, 255",      // Cool blue
-      "240, 245, 255",      // Ice white
-      "255, 255, 245",      // Cream white
-    ],
-    accentGlow: "#6a7a9a",
-  },
-
-  // 2-5pm: Stellar Drift - Like a comet's tail
-  afternoon: {
-    colorA: "#201830",      // Purple-blue shift
-    colorB: "#302840",      // Drifting violet
-    baseColor: "#282035",   // Comet core
-    upColor: "#3a3048",     // Tail glow
-    downColor: "#100c15",   // Deep shadow
-    leftColor: "#252030",   // Trailing edge
-    rightColor: "#2a2538",  // Leading edge
-    overlayOpacity: 0.01,
-    starColors: [
-      "220, 200, 255",      // Violet shift
-      "255, 220, 240",      // Pink drift
-      "200, 180, 240",      // Lavender
-      "255, 230, 230",      // Warm fade
-      "180, 200, 255",      // Cool blue
-      "240, 220, 255",      // Soft purple
-    ],
-    accentGlow: "#7a5a8a",
-  },
-
-  // 5-6:30pm: Golden Hour - Solar warmth intensifies
-  goldenHour: {
-    colorA: "#2a2015",      // Deep amber
-    colorB: "#453020",      // Rich gold
-    baseColor: "#38281a",   // Golden core
-    upColor: "#503828",     // Ember glow
-    downColor: "#151008",   // Warm shadow
-    leftColor: "#322518",   // Amber edge
-    rightColor: "#3a2a18",  // Gold rim
-    overlayOpacity: 0.02,
-    starColors: [
-      "255, 220, 150",      // Golden
-      "255, 200, 120",      // Deep gold
-      "255, 240, 180",      // Light gold
-      "240, 200, 140",      // Amber
-      "255, 230, 160",      // Warm yellow
-      "250, 210, 150",      // Soft gold
-    ],
-    accentGlow: "#aa7a3a",
-  },
-
-  // 6:30-8pm: Cosmic Sunset - Like a dying star
-  sunset: {
-    colorA: "#2a1520",      // Deep burgundy
-    colorB: "#4a2530",      // Dying star red
-    baseColor: "#351a28",   // Sunset core
-    upColor: "#5a3038",     // Ember glow
-    downColor: "#100810",   // Night approaching
-    leftColor: "#301a25",   // Fading horizon
-    rightColor: "#402028",  // Last light
-    overlayOpacity: 0.03,
-    starColors: [
-      "255, 150, 100",      // Orange giant
-      "255, 180, 150",      // Warm ember
-      "255, 120, 80",       // Deep orange
-      "255, 200, 180",      // Pink sunset
-      "220, 150, 120",      // Dusty red
-      "255, 160, 140",      // Salmon glow
-    ],
-    accentGlow: "#aa5a4a",
-  },
-
-  // 8-9:30pm: Twilight Nebula - Deep purples like Carina Nebula
-  dusk: {
-    colorA: "#1a1030",      // Deep purple
-    colorB: "#301848",      // Nebula purple
-    baseColor: "#251238",   // Twilight core
-    upColor: "#3a2050",     // Magenta clouds
-    downColor: "#0a0815",   // Deep void
-    leftColor: "#201030",   // Purple edge
-    rightColor: "#2a1540",  // Violet rim
-    overlayOpacity: 0.04,
-    starColors: [
-      "220, 150, 255",      // Bright purple
-      "255, 180, 220",      // Pink nebula
-      "180, 120, 220",      // Deep violet
-      "255, 200, 255",      // Light magenta
-      "200, 180, 255",      // Soft purple
-      "240, 160, 240",      // Orchid
-    ],
-    accentGlow: "#8a3a9a",
-  },
-
-  // 9:30-11pm: Midnight Galaxy - The Milky Way
-  evening: {
-    colorA: "#101025",      // Deep blue-black
-    colorB: "#202040",      // Galaxy arm blue
-    baseColor: "#151530",   // Midnight void
-    upColor: "#252550",     // Star cloud glow
-    downColor: "#080810",   // Absolute dark
-    leftColor: "#181835",   // Galaxy edge
-    rightColor: "#1a1a3a",  // Spiral arm
+    colorA: "#14183A",      // Base navy
+    colorB: "#1C2048",      // Lighter navy
+    baseColor: "#181C40",   // Warm base
+    upColor: "#242852",     // Rising light
+    downColor: "#0C0E26",   // Shadow
+    leftColor: "#1A1E44",   // Edge
+    rightColor: "#161A3C",  // Rim
     overlayOpacity: 0.05,
     starColors: [
-      "200, 220, 255",      // Blue giants
-      "255, 220, 200",      // Yellow stars
-      "180, 200, 255",      // Cool blue
-      "255, 200, 180",      // Orange giants
-      "220, 220, 255",      // White giants
-      "255, 180, 150",      // Red giants
+      "112, 120, 168",      // Soft blue
+      "128, 135, 180",      // Brighter
+      "105, 112, 160",      // Cool
+      "135, 140, 188",      // Pale
+      "120, 126, 174",      // Mid
+      "115, 124, 172",      // Accent
     ],
-    accentGlow: "#4a4a8a",
+    accentGlow: "#5860A0",
+  },
+
+  // 8-11am: Morning Light
+  morning: {
+    colorA: "#181C40",      // Cool navy
+    colorB: "#222652",      // Brighter
+    baseColor: "#1C2045",   // Clear
+    upColor: "#282D58",     // Light
+    downColor: "#101330",   // Shadow
+    leftColor: "#1E2248",   // Cool side
+    rightColor: "#20244C",  // Bright edge
+    overlayOpacity: 0.04,
+    starColors: [
+      "120, 128, 176",      // Bright blue
+      "135, 142, 188",      // Light
+      "112, 120, 168",      // Mid
+      "145, 150, 195",      // Pale
+      "128, 135, 180",      // Cool
+      "155, 165, 220",      // Soft
+    ],
+    accentGlow: "#8088D0",
+  },
+
+  // 11am-2pm: Stellar Noon - Peak brightness (still dark themed)
+  midday: {
+    colorA: "#1C1F3A",      // Base slate
+    colorB: "#262A4C",      // Brighter slate
+    baseColor: "#1E2240",   // Clear space
+    upColor: "#2E3258",     // Zenith light
+    downColor: "#121530",   // Grounded shadow
+    leftColor: "#222648",   // Cool side
+    rightColor: "#24284A",  // Bright edge
+    overlayOpacity: 0.03,
+    starColors: [
+      "128, 136, 185",      // Bright
+      "145, 152, 198",      // White-blue
+      "120, 128, 176",      // Cool
+      "152, 158, 202",      // Pale
+      "138, 145, 192",      // Mid
+      "132, 140, 188",      // Soft
+    ],
+    accentGlow: "#6870A8",
+  },
+
+  // 2-5pm: Afternoon Drift
+  afternoon: {
+    colorA: "#181C3C",      // Purple-blue
+    colorB: "#242852",      // Drifting
+    baseColor: "#1C2042",   // Core
+    upColor: "#2A2E58",     // Glow
+    downColor: "#10132E",   // Shadow
+    leftColor: "#1E2248",   // Trail
+    rightColor: "#22264C",  // Lead
+    overlayOpacity: 0.04,
+    starColors: [
+      "118, 125, 172",      // Shift
+      "132, 138, 185",      // Drift
+      "108, 118, 165",      // Soft
+      "140, 145, 192",      // Pale
+      "125, 132, 178",      // Cool
+      "120, 128, 175",      // Mid
+    ],
+    accentGlow: "#5A62A0",
+  },
+
+  // 5-6:30pm: Golden Hour (twilight tones)
+  goldenHour: {
+    colorA: "#161A3C",      // Deeper blue
+    colorB: "#20244A",      // Twilight
+    baseColor: "#1A1E42",   // Core
+    upColor: "#282C55",     // Glow
+    downColor: "#0E1128",   // Shadow
+    leftColor: "#1C2045",   // Edge
+    rightColor: "#1E2248",  // Rim
+    overlayOpacity: 0.05,
+    starColors: [
+      "112, 120, 168",      // Golden-blue
+      "128, 135, 180",      // Light
+      "105, 112, 160",      // Deep
+      "135, 140, 188",      // Pale
+      "120, 126, 175",      // Mid
+      "118, 125, 172",      // Soft
+    ],
+    accentGlow: "#525898",
+  },
+
+  // 6:30-8pm: Cosmic Sunset
+  sunset: {
+    colorA: "#14183A",      // Deep navy
+    colorB: "#1C2045",      // Sunset navy
+    baseColor: "#181C40",   // Core
+    upColor: "#242850",     // Glow
+    downColor: "#0C0E26",   // Night approaching
+    leftColor: "#1A1E42",   // Fading
+    rightColor: "#1C2048",  // Last light
+    overlayOpacity: 0.06,
+    starColors: [
+      "105, 112, 165",      // Deeper
+      "120, 126, 176",      // Soft
+      "95, 105, 155",       // Cool
+      "128, 132, 182",      // Pale
+      "112, 118, 170",      // Mid
+      "108, 116, 168",      // Accent
+    ],
+    accentGlow: "#484F88",
+  },
+
+  // 8-9:30pm: Twilight Nebula
+  dusk: {
+    colorA: "#101335",      // Deep purple
+    colorB: "#181C40",      // Nebula
+    baseColor: "#141738",   // Twilight core
+    upColor: "#1E2248",     // Clouds
+    downColor: "#080A1E",   // Deep void
+    leftColor: "#151838",   // Purple edge
+    rightColor: "#161A3C",  // Violet rim
+    overlayOpacity: 0.07,
+    starColors: [
+      "96, 105, 158",       // Deep accent
+      "112, 118, 172",      // Nebula
+      "88, 96, 150",        // Violet
+      "120, 126, 180",      // Light
+      "105, 110, 165",      // Soft
+      "100, 108, 160",      // Cool
+    ],
+    accentGlow: "#424882",
+  },
+
+  // 9:30-11pm: Midnight Galaxy
+  evening: {
+    colorA: "#0C0F28",      // Deep blue-black
+    colorB: "#141735",      // Galaxy arm
+    baseColor: "#10132E",   // Midnight void
+    upColor: "#1A1D40",     // Star cloud glow
+    downColor: "#060818",   // Absolute dark
+    leftColor: "#121530",   // Galaxy edge
+    rightColor: "#131632",  // Spiral arm
+    overlayOpacity: 0.08,
+    starColors: [
+      "90, 97, 158",        // #7179C6 dimmed
+      "105, 112, 168",      // Brighter
+      "80, 88, 148",        // Cool
+      "115, 122, 176",      // Pale
+      "96, 102, 160",       // Mid
+      "92, 100, 156",       // Deep
+    ],
+    accentGlow: "#3A4078",
   },
 }
 

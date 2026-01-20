@@ -10,6 +10,7 @@ import { GrainOverlay } from "@/components/grain-overlay"
 import { ColorControlPanel } from "@/components/color-control-panel"
 import { TimePreviewSlider } from "@/components/time-preview-slider"
 import { TimeIndicator } from "@/components/time-indicator"
+import { TimeIsland } from "@/components/time-island"
 import { useTimeContrast } from "@/hooks/use-time-contrast"
 import { RadiantConstellation } from "@/components/radiant-constellation"
 
@@ -98,25 +99,14 @@ export default function Portfolio() {
         dotOpacity={colorConfig.dotOpacity}
       />
 
-      {SHOW_DEV_CONTROLS ? (
-        <>
-          {showColorControls && (
-            <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
-          )}
-          <TimePreviewSlider
-            value={previewHour}
-            onChange={setPreviewHour}
-            timeOfDay={timePalette.timeOfDay}
-            showColorControls={showColorControls}
-            onToggleColorControls={() => setShowColorControls(!showColorControls)}
-          />
-        </>
-      ) : (
-        <TimeIndicator
-          timeOfDay={timePalette.timeOfDay}
-          value={previewHour}
-          onChange={setPreviewHour}
-        />
+      <TimeIsland
+        value={previewHour}
+        onChange={setPreviewHour}
+        timeOfDay={timePalette.timeOfDay}
+      />
+
+      {SHOW_DEV_CONTROLS && showColorControls && (
+        <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
       )}
 
       {/* Content area */}
