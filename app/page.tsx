@@ -214,7 +214,16 @@ export default function Page() {
 
         <Separator />
 
-        <div className="screen-line-bottom flex-1 border-x border-line" />
+        <div className="screen-line-bottom relative flex-1 border-x border-line">
+          <span
+            aria-hidden
+            className="absolute -bottom-[4.5px] -left-[4.5px] z-20 block size-2 border border-line bg-background"
+          />
+          <span
+            aria-hidden
+            className="absolute -bottom-[4.5px] -right-[4.5px] z-20 block size-2 border border-line bg-background"
+          />
+        </div>
       </div>
     </main>
   )
