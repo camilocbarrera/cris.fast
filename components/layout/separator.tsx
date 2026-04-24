@@ -28,20 +28,20 @@ export function Separator({
             id={patternId}
             x="0"
             y="0"
-            width="14"
-            height="14"
+            width="10"
+            height="10"
             patternUnits="userSpaceOnUse"
           >
             <g
               stroke="var(--line)"
-              strokeWidth="0.6"
+              strokeWidth="0.5"
               strokeLinecap="round"
               fill="none"
             >
-              <line x1="1.5" y1="1.5" x2="5.5" y2="5.5" />
-              <line x1="5.5" y1="1.5" x2="1.5" y2="5.5" />
-              <line x1="8.5" y1="8.5" x2="12.5" y2="12.5" />
-              <line x1="12.5" y1="8.5" x2="8.5" y2="12.5" />
+              <line x1="1" y1="1" x2="4" y2="4" />
+              <line x1="4" y1="1" x2="1" y2="4" />
+              <line x1="6" y1="6" x2="9" y2="9" />
+              <line x1="9" y1="6" x2="6" y2="9" />
             </g>
           </pattern>
         </defs>
