@@ -1,131 +1,220 @@
-"use client"
-
-import { useState, useEffect, useRef } from "react"
-import { GlitchEffect } from "@/components/glitch-effect"
-import { BorderLines } from "@/components/border-lines"
-import { HoverZones } from "@/components/hover-zones"
+import {
+  Panel,
+  PanelContent,
+  PanelHeader,
+  PanelTitle,
+} from "@/components/layout/panel"
+import { Separator } from "@/components/layout/separator"
 import { SocialLinks } from "@/components/social-links"
-import { ShaderBackground } from "@/components/shader-background"
-import { GrainOverlay } from "@/components/grain-overlay"
-import { ColorControlPanel } from "@/components/color-control-panel"
-import { TimePreviewSlider } from "@/components/time-preview-slider"
-import { TimeIndicator } from "@/components/time-indicator"
-import { TimeIsland } from "@/components/time-island"
-import { useTimeContrast } from "@/hooks/use-time-contrast"
-import { RadiantConstellation } from "@/components/radiant-constellation"
 
-const initialColorConfig = {
-  shaderColorA: "#050505",
-  shaderColorB: "#1a1a1a",
-  shaderBaseColor: "#2a2a2a",
-  shaderUpColor: "#181818",
-  shaderDownColor: "#030303",
-  shaderLeftColor: "#141414",
-  shaderRightColor: "#0a0a0a",
-  shaderIntensity: 0.8,
-  shaderOverlayOpacity: 0.1,
-  borderLineColor: "#888888",
-  borderLineOpacity: 0.35,
-  dotOpacity: 0.45,
-  selectionBg: "#2a2a2a",
+type Experience = {
+  company: string
+  role: string
+  period: string
+  summary: string
 }
 
-const isProduction = process.env.NODE_ENV === "production"
-const SHOW_DEV_CONTROLS = !isProduction
+const experience: Experience[] = [
+  {
+    company: "Independent Consultant",
+    role: "AI, Data & Product",
+    period: "Nov 2023 – Present",
+    summary:
+      "AI products and data platforms. Some clients: El Tiempo, Spectrum Reach, Nubank.",
+  },
+  {
+    company: "Platzi",
+    role: "Data & Analytics Engineer",
+    period: "May 2022 – Apr 2023",
+    summary:
+      "Led dbt project structure and CI/CD, migrated Redshift → BigQuery, built an offline feature store that cut training time in half.",
+  },
+  {
+    company: "Rappi",
+    role: "Data & Analytics Engineer (Partner)",
+    period: "May 2020 – May 2022",
+    summary:
+      "Built the data foundation for Rappi Ads. Insights drove −50% churn and 6× revenue growth in 1.2 years.",
+  },
+  {
+    company: "Azzorti",
+    role: "Data & Analytics, SAP BI",
+    period: "Oct 2018 – Jun 2020",
+    summary:
+      "SAP BW / HANA implementations, BusinessObjects reporting, and a PHP–R integration over SOAP.",
+  },
+]
 
-export default function Portfolio() {
-  const [spacing, setSpacing] = useState({ horizontal: 380, vertical: 500 })
-  const [isMobile, setIsMobile] = useState(false)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [colorConfig, setColorConfig] = useState(initialColorConfig)
-  const [previewHour, setPreviewHour] = useState<number | null>(null)
-  const [showColorControls, setShowColorControls] = useState(true)
-  const [glitchKey, setGlitchKey] = useState(0)
+type Project = {
+  name: string
+  url: string
+  host: string
+  summary: string
+}
 
-  const timePalette = useTimeContrast(previewHour)
+const projects: Project[] = [
+  {
+    name: "Kebo",
+    url: "https://kebo.app",
+    host: "kebo.app",
+    summary:
+      "Open-source AI agent for personal finance. 20k MAU · 100k downloads · 80k users in LATAM.",
+  },
+  {
+    name: "Maca",
+    url: "https://maca.sh",
+    host: "maca.sh",
+    summary: "Blazing-fast voice-to-text. 5× productivity.",
+  },
+  {
+    name: "C3",
+    url: "https://c3.crafter.run",
+    host: "c3.crafter.run",
+    summary:
+      "Open-source multi-model AI chat. GPT-4o, Claude, Gemini, DeepSeek, Grok.",
+  },
+  {
+    name: "LaTeX0",
+    url: "https://latex0.crafter.run",
+    host: "latex0.crafter.run",
+    summary: "AI-native LaTeX editor.",
+  },
+  {
+    name: "SQL4All",
+    url: "https://sql4all.org",
+    host: "sql4all.org",
+    summary:
+      "Free interactive SQL learning for Spanish speakers. PGlite in the browser.",
+  },
+  {
+    name: "DAG Sketch",
+    url: "https://dag.cris.fast",
+    host: "dag.cris.fast",
+    summary: "Design and visualize Airflow DAGs from YAML.",
+  },
+]
 
-  useEffect(() => {
-    document.documentElement.style.setProperty("--selection-bg", colorConfig.selectionBg)
-  }, [colorConfig.selectionBg])
-
-  useEffect(() => {
-    function calculateResponsiveSpacing() {
-      const vw = window.innerWidth
-      const vh = window.innerHeight
-      const mobile = vw < 768
-
-      setIsMobile(mobile)
-
-      if (mobile) {
-        const contentHeight = contentRef.current?.offsetHeight || 150
-        const minPadding = 40
-        const maxHorizontal = Math.floor((vh - contentHeight) / 2 - minPadding)
-        const horizontalSpacing = Math.max(60, Math.min(maxHorizontal, vh * 0.15))
-        const verticalSpacing = Math.max(24, Math.min(vw * 0.08, 48))
-        setSpacing({ horizontal: horizontalSpacing, vertical: verticalSpacing })
-      } else {
-        const horizontalPercent = 380 / 1920
-        const verticalPercent = 500 / 1080
-        const horizontal = Math.max(150, Math.min(vh * 0.35, vh * horizontalPercent * 2))
-        const vertical = Math.max(100, Math.min(vw * 0.25, vw * verticalPercent))
-        setSpacing({ horizontal, vertical })
-      }
-    }
-
-    calculateResponsiveSpacing()
-    window.addEventListener("resize", calculateResponsiveSpacing)
-    return () => window.removeEventListener("resize", calculateResponsiveSpacing)
-  }, [])
-
+export default function Page() {
   return (
-    <main className="fixed inset-0 flex items-center justify-center px-4 overflow-hidden">
-      <ShaderBackground
-        palette={timePalette}
-        intensity={colorConfig.shaderIntensity}
-        overlayOpacity={timePalette.overlayOpacity}
-      />
-
-      <RadiantConstellation opacity={0.5} starColors={timePalette.starColors} />
-
-      <GrainOverlay />
-      <GlitchEffect />
-
-      <HoverZones spacing={spacing} isMobile={isMobile} />
-
-      <BorderLines
-        spacing={spacing}
-        lineColor={colorConfig.borderLineColor}
-        lineOpacity={colorConfig.borderLineOpacity}
-        dotOpacity={colorConfig.dotOpacity}
-      />
-
-      <TimeIsland
-        value={previewHour}
-        onChange={setPreviewHour}
-        timeOfDay={timePalette.timeOfDay}
-      />
-
-      {SHOW_DEV_CONTROLS && showColorControls && (
-        <ColorControlPanel onChange={setColorConfig} initialConfig={initialColorConfig} />
-      )}
-
-      {/* Content area */}
-      <div ref={contentRef} className="w-full max-w-[240px] md:max-w-md space-y-4 md:space-y-6 relative z-10">
-        <GlitchEffect.Text triggerKey={glitchKey}>
-          <div className="space-y-1 md:space-y-2">
-            <h1
-              className="text-xl md:text-3xl font-medium text-foreground text-balance cursor-default"
-              onMouseEnter={() => setGlitchKey((k) => k + 1)}
-            >
-              Cris
-            </h1>
-            <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-              {"Software Engineer building data-intensive applications"}
-            </p>
+    <main className="max-w-screen overflow-x-clip px-2">
+      <div className="mx-auto flex min-h-dvh flex-col md:max-w-3xl">
+        <section className="screen-line-top screen-line-bottom border-x border-line px-4 py-10 md:py-14">
+          <h1 className="text-5xl italic text-balance md:text-7xl">
+            Cristian Correa
+          </h1>
+          <p className="mt-4 text-base text-muted-foreground text-pretty md:text-lg">
+            Data &amp; AI Engineer shipping production AI systems and data platforms.
+          </p>
+          <div className="mt-6">
+            <SocialLinks />
           </div>
-        </GlitchEffect.Text>
+        </section>
 
-        <SocialLinks />
+        <Separator />
+
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>Overview</PanelTitle>
+          </PanelHeader>
+          <PanelContent className="space-y-3 text-sm leading-relaxed text-muted-foreground md:text-base">
+            <p>
+              Software Engineer and statistician. I build AI products and data
+              platforms — 8+ years across fintech, ed-tech, ad-tech, and
+              journalism.
+            </p>
+            <p>
+              Creator of Kebo, an open-source personal finance app with 80k+
+              users in LATAM. The last two years I&apos;ve been shipping
+              production AI/ML systems with LLMs, RAG, and agentic workflows.
+            </p>
+          </PanelContent>
+        </Panel>
+
+        <Separator />
+
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>Experience</PanelTitle>
+          </PanelHeader>
+          <div className="divide-y divide-line">
+            {experience.map((job) => (
+              <article key={job.company} className="space-y-1 px-4 py-4">
+                <header className="flex items-baseline justify-between gap-4">
+                  <h3 className="text-base font-medium">{job.company}</h3>
+                  <span className="shrink-0 text-xs italic text-muted-foreground">
+                    {job.period}
+                  </span>
+                </header>
+                <p className="text-sm italic text-muted-foreground">
+                  {job.role}
+                </p>
+                <p className="text-sm text-muted-foreground">{job.summary}</p>
+              </article>
+            ))}
+          </div>
+        </Panel>
+
+        <Separator />
+
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>Selected Projects</PanelTitle>
+          </PanelHeader>
+          <div className="divide-y divide-line">
+            {projects.map((project) => (
+              <article key={project.name} className="space-y-1 px-4 py-4">
+                <header className="flex items-baseline justify-between gap-4">
+                  <h3 className="text-base font-medium">
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline-offset-4 hover:underline"
+                    >
+                      {project.name}
+                    </a>
+                  </h3>
+                  <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                    {project.host}
+                  </span>
+                </header>
+                <p className="text-sm text-muted-foreground">
+                  {project.summary}
+                </p>
+              </article>
+            ))}
+          </div>
+        </Panel>
+
+        <Separator />
+
+        <Panel>
+          <PanelHeader>
+            <PanelTitle>Contact</PanelTitle>
+          </PanelHeader>
+          <PanelContent className="space-y-4">
+            <dl className="grid grid-cols-[88px_1fr] gap-y-1 text-sm">
+              <dt className="italic text-muted-foreground">Location</dt>
+              <dd>Bogotá, Colombia</dd>
+              <dt className="italic text-muted-foreground">Email</dt>
+              <dd>
+                <a
+                  href="mailto:cristian.correa.cs@gmail.com"
+                  className="underline-offset-4 hover:underline"
+                >
+                  cristian.correa.cs@gmail.com
+                </a>
+              </dd>
+            </dl>
+            <div className="pt-2">
+              <SocialLinks />
+            </div>
+          </PanelContent>
+        </Panel>
+
+        <Separator />
+
+        <div className="screen-line-bottom flex-1 border-x border-line" />
       </div>
     </main>
   )
