@@ -4,7 +4,7 @@ import { Instrument_Serif, Geist_Mono } from "next/font/google"
 import Script from "next/script"
 import { Analytics } from "@vercel/analytics/next"
 import { ProgressiveBlur } from "@/components/layout/progressive-blur"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { SiteHeader } from "@/components/layout/site-header"
 import "./globals.css"
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var c=document.documentElement.classList;if(t==='dark')c.add('dark');else c.remove('dark');}catch(e){}})();`
@@ -150,7 +150,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        <ThemeToggle className="fixed top-4 right-4 z-50 size-8" />
+        <SiteHeader />
         {children}
         <ProgressiveBlur position="top" />
         <ProgressiveBlur position="bottom" />
