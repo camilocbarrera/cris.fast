@@ -152,7 +152,6 @@ export default function RootLayout({
         />
         <SiteHeader />
         {children}
-        <ProgressiveBlur position="top" />
         <ProgressiveBlur position="bottom" />
         <Analytics />
       </body>
