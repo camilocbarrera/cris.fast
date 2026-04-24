@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Instrument_Serif, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { ProgressiveBlur } from "@/components/layout/progressive-blur"
 import "./globals.css"
 
 const instrumentSerif = Instrument_Serif({
@@ -143,6 +144,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         {children}
+        <ProgressiveBlur position="top" />
+        <ProgressiveBlur position="bottom" />
         <Analytics />
       </body>
     </html>
