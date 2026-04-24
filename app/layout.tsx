@@ -1,9 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Instrument_Serif, Geist_Mono } from "next/font/google"
+import Script from "next/script"
 import { Analytics } from "@vercel/analytics/next"
 import { ProgressiveBlur } from "@/components/layout/progressive-blur"
+import { ThemeToggle } from "@/components/theme-toggle"
 import "./globals.css"
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';var c=document.documentElement.classList;if(t==='dark')c.add('dark');else c.remove('dark');}catch(e){}})();`
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -135,6 +139,9 @@ export default function RootLayout({
       className={`dark ${instrumentSerif.variable} ${geistMono.variable}`}
     >
       <body className="font-serif">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -143,6 +150,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
+        <ThemeToggle className="fixed top-4 right-4 z-50 size-8" />
         {children}
         <ProgressiveBlur position="top" />
         <ProgressiveBlur position="bottom" />
