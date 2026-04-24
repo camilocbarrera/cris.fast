@@ -18,19 +18,48 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cris.fast"),
-  title: "Cris",
-  description: "Cristian Correa — Software Engineer building data-intensive applications.",
+  title: {
+    default: "Cristian Correa — Data & AI Engineer",
+    template: "%s — Cristian Correa",
+  },
+  description:
+    "Cristian Correa (Cris) — Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
+  keywords: [
+    "Cristian Correa",
+    "Cris Correa",
+    "Data Engineer",
+    "AI Engineer",
+    "Kebo",
+    "Crafter Station",
+    "Bogotá",
+    "Colombia",
+    "LLM",
+    "RAG",
+    "dbt",
+    "Snowflake",
+  ],
+  authors: [{ name: "Cristian Correa", url: "https://cris.fast" }],
+  creator: "Cristian Correa",
+  alternates: {
+    canonical: "https://cris.fast",
+  },
   openGraph: {
-    title: "Cris — Software Engineer",
-    description: "Cristian Correa — Software Engineer building data-intensive applications.",
+    title: "Cristian Correa — Data & AI Engineer",
+    description:
+      "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
+    url: "https://cris.fast",
+    siteName: "cris.fast",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Cristian Correa" }],
-    type: "website",
+    type: "profile",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cris — Software Engineer",
-    description: "Cristian Correa — Software Engineer building data-intensive applications.",
+    title: "Cristian Correa — Data & AI Engineer",
+    description:
+      "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo.",
     images: ["/og-twitter.png"],
+    creator: "@camilocbarrera",
   },
   icons: {
     icon: [
@@ -40,6 +69,60 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-touch-icon.png",
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+}
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Cristian Correa",
+  alternateName: ["Cris Correa", "Cris"],
+  url: "https://cris.fast",
+  image: "https://cris.fast/og.png",
+  jobTitle: "Data & AI Engineer",
+  description:
+    "Statistician and software engineer building production AI systems and data platforms. Creator of Kebo.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bogotá",
+    addressCountry: "CO",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Universidad El Bosque",
+  },
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Large Language Models",
+    "Retrieval Augmented Generation",
+    "Data Engineering",
+    "dbt",
+    "Snowflake",
+    "BigQuery",
+    "TypeScript",
+    "Python",
+    "SQL",
+  ],
+  sameAs: [
+    "https://github.com/camilocbarrera",
+    "https://www.linkedin.com/in/cristiancamilocorrea/",
+    "https://x.com/camilocbarrera",
+    "https://www.instagram.com/cristiancorrea.xyz/",
+    "https://kebo.app",
+  ],
+}
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "cris.fast",
+  url: "https://cris.fast",
+  author: { "@type": "Person", name: "Cristian Correa" },
+  inLanguage: "en",
 }
 
 export default function RootLayout({
@@ -51,6 +134,14 @@ export default function RootLayout({
       className={`dark ${instrumentSerif.variable} ${geistMono.variable}`}
     >
       <body className="font-serif">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         {children}
         <Analytics />
       </body>
