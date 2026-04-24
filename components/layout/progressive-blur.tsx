@@ -32,7 +32,8 @@ export function ProgressiveBlur({
   useEffect(() => {
     function update() {
       const scrollY = window.scrollY
-      const viewport = window.innerHeight
+      const vv = window.visualViewport
+      const viewport = vv ? vv.height : window.innerHeight
       const doc = document.documentElement.scrollHeight
 
       if (isTop) {
@@ -45,9 +46,13 @@ export function ProgressiveBlur({
     update()
     window.addEventListener("scroll", update, { passive: true })
     window.addEventListener("resize", update)
+    window.visualViewport?.addEventListener("resize", update)
+    window.visualViewport?.addEventListener("scroll", update)
     return () => {
       window.removeEventListener("scroll", update)
       window.removeEventListener("resize", update)
+      window.visualViewport?.removeEventListener("resize", update)
+      window.visualViewport?.removeEventListener("scroll", update)
     }
   }, [isTop, threshold])
 
@@ -64,7 +69,7 @@ export function ProgressiveBlur({
         className,
       )}
       style={{
-        [isTop ? "top" : "bottom"]: 0,
+        top: isTop ? 0 : `calc(100dvh - ${height})`,
         height,
         background: isTop
           ? `linear-gradient(to top, transparent, ${backgroundColor})`
