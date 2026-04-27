@@ -64,7 +64,7 @@ export function ProgressiveBlur({
     <div
       aria-hidden
       className={cn(
-        "pointer-events-none fixed inset-x-0 z-40 select-none transition-opacity duration-300",
+        "pointer-events-none fixed inset-x-0 z-40 hidden select-none transition-opacity duration-300 sm:block",
         visible ? "opacity-100" : "opacity-0",
         className,
       )}
