@@ -24,11 +24,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://cris.fast"),
   title: {
-    default: "Cristian Correa — Data & AI Engineer",
-    template: "%s — Cristian Correa",
+    default: "Cristian Correa, Data & AI Engineer",
+    template: "%s, Cristian Correa",
   },
   description:
-    "Cristian Correa (Cris) — Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
+    "Cristian Correa (Cris), Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
   keywords: [
     "Cristian Correa",
     "Cris Correa",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     canonical: "https://cris.fast",
   },
   openGraph: {
-    title: "Cristian Correa — Data & AI Engineer",
+    title: "Cristian Correa, Data & AI Engineer",
     description:
       "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
     url: "https://cris.fast",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cristian Correa — Data & AI Engineer",
+    title: "Cristian Correa, Data & AI Engineer",
     description:
       "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo.",
     images: ["/og-twitter.png"],

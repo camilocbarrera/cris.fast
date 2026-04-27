@@ -119,7 +119,7 @@ export default function Page() {
           <PanelContent className="space-y-3 text-sm leading-relaxed text-muted-foreground md:text-base">
             <p>
               Software Engineer and statistician. I build AI products and data
-              platforms — 8+ years across fintech, ed-tech, ad-tech, and
+              platforms, with 8+ years across fintech, ed-tech, ad-tech, and
               journalism.
             </p>
             <p>
