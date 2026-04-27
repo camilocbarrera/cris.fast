@@ -2,7 +2,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 max-w-screen overflow-x-clip bg-background px-2 pt-2">
+    <header className="sticky top-0 z-50 bg-background px-2 pt-2">
       <div className="screen-line-top screen-line-bottom relative mx-auto flex h-12 items-center justify-between gap-2 border-x border-line px-3 sm:gap-4 md:max-w-3xl">
         <span
           aria-hidden
