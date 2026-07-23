@@ -109,7 +109,7 @@ export default function Page() {
           <h1 className="text-5xl italic text-balance md:text-7xl">
             Cristian Correa
           </h1>
-          <p className="mt-4 text-base text-muted-foreground text-pretty md:text-lg">
+          <p className="mt-4 text-lg text-muted-foreground text-pretty md:text-xl">
             Data Engineer shipping production AI systems and data platforms.
           </p>
           <div className="mt-6">
@@ -123,7 +123,7 @@ export default function Page() {
           <PanelHeader>
             <PanelTitle>Overview</PanelTitle>
           </PanelHeader>
-          <PanelContent className="space-y-3 text-sm leading-relaxed text-muted-foreground md:text-base">
+          <PanelContent className="space-y-3 text-base leading-relaxed text-muted-foreground md:text-lg">
             <p>
               Software Engineer and statistician with a strong entrepreneurial
               mindset. I build AI products and data platforms, with 8+ years
@@ -147,7 +147,7 @@ export default function Page() {
             {experience.map((job) => (
               <article key={job.company} className="space-y-1 px-4 py-4">
                 <header className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-base font-medium">{job.company}</h3>
+                  <h3 className="text-lg font-medium">{job.company}</h3>
                   <span className="shrink-0 text-xs italic text-muted-foreground">
                     {job.period}
                   </span>
@@ -155,7 +155,7 @@ export default function Page() {
                 <p className="text-sm italic text-muted-foreground">
                   {job.role}
                 </p>
-                <p className="text-sm text-muted-foreground">{job.summary}</p>
+                <p className="text-base text-muted-foreground">{job.summary}</p>
               </article>
             ))}
           </div>
@@ -171,7 +171,7 @@ export default function Page() {
             {projects.map((project) => (
               <article key={project.name} className="space-y-1 px-4 py-4">
                 <header className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-base font-medium">
+                  <h3 className="text-lg font-medium">
                     <a
                       href={project.url}
                       target="_blank"
@@ -185,7 +185,7 @@ export default function Page() {
                     {project.host}
                   </span>
                 </header>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   {project.summary}
                 </p>
               </article>
@@ -200,7 +200,7 @@ export default function Page() {
             <PanelTitle>Contact</PanelTitle>
           </PanelHeader>
           <PanelContent className="space-y-4">
-            <dl className="grid grid-cols-[88px_1fr] gap-y-1 text-sm">
+            <dl className="grid grid-cols-[96px_1fr] gap-y-1 text-base">
               <dt className="italic text-muted-foreground">Location</dt>
               <dd>Bogotá, Colombia</dd>
               <dt className="italic text-muted-foreground">Email</dt>
