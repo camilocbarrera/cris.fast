@@ -1,12 +1,12 @@
 # Cristian Correa (cris.fast)
 
-> Personal site of Cristian Correa — Data & AI Engineer based in Bogotá, Colombia. Creator of Kebo. Builds production AI systems and data platforms.
+> Personal site of Cristian Correa — Data Engineer based in Bogotá, Colombia. Creator of Kebo. Builds production AI systems and data platforms.
 
 ## About
 - [Full profile (markdown)](https://cris.fast/llms-full.txt): bio, experience, projects, stack, and contact — canonical LLM-readable source.
 
 ## Primary project
-- [Kebo](https://kebo.app): Open-source AI agent for personal finance. 20k MAU, 100k+ downloads, 80k users in LATAM.
+- [Kebo](https://kebo.app): Open-source AI agent for personal finance. 100k+ users in LATAM, 30k MAU.
 
 ## Other projects
 - [Maca](https://maca.sh): Blazing-fast voice-to-text desktop tool.
