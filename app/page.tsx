@@ -125,9 +125,9 @@ export default function Page() {
           </PanelHeader>
           <PanelContent className="space-y-3 text-sm leading-relaxed text-muted-foreground md:text-base">
             <p>
-              Software Engineer and statistician. I build AI products and data
-              platforms, with 8+ years across fintech, ed-tech, ad-tech, and
-              journalism.
+              Software Engineer and statistician with a strong entrepreneurial
+              mindset. I build AI products and data platforms, with 8+ years
+              across fintech, ed-tech, ad-tech, and journalism.
             </p>
             <p>
               Creator of Kebo, an open-source personal finance app with 100k+
