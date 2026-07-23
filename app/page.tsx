@@ -65,7 +65,7 @@ const projects: Project[] = [
     url: "https://kebo.app",
     host: "kebo.app",
     summary:
-      "Open-source AI agent for personal finance. 20k MAU · 100k downloads · 80k users in LATAM.",
+      "Open-source AI agent for personal finance. 100k+ users in LATAM · 30k MAU.",
   },
   {
     name: "Maca",
@@ -130,7 +130,7 @@ export default function Page() {
               journalism.
             </p>
             <p>
-              Creator of Kebo, an open-source personal finance app with 80k+
+              Creator of Kebo, an open-source personal finance app with 100k+
               users in LATAM. The last two years I&apos;ve been shipping
               production AI/ML systems with LLMs, RAG, and agentic workflows.
             </p>
