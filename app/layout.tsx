@@ -56,6 +56,9 @@ export const metadata: Metadata = {
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Cristian Correa" }],
     type: "profile",
     locale: "en_US",
+    firstName: "Cristian",
+    lastName: "Correa",
+    username: "camilocbarrera",
   },
   twitter: {
     card: "summary_large_image",
@@ -80,53 +83,79 @@ export const metadata: Metadata = {
   },
 }
 
-const personJsonLd = {
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Cristian Correa",
-  alternateName: ["Cris Correa", "Cris"],
-  url: "https://cris.fast",
-  image: "https://cris.fast/og.png",
-  jobTitle: "Data Engineer",
-  description:
-    "Statistician and software engineer building production AI systems and data platforms. Creator of Kebo.",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Bogotá",
-    addressCountry: "CO",
-  },
-  alumniOf: {
-    "@type": "CollegeOrUniversity",
-    name: "Universidad El Bosque",
-  },
-  knowsAbout: [
-    "Artificial Intelligence",
-    "Large Language Models",
-    "Retrieval Augmented Generation",
-    "Data Engineering",
-    "dbt",
-    "Snowflake",
-    "BigQuery",
-    "TypeScript",
-    "Python",
-    "SQL",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://cris.fast/#person",
+      name: "Cristian Correa",
+      alternateName: ["Cris Correa", "Cris"],
+      url: "https://cris.fast",
+      image: "https://cris.fast/og.png",
+      email: "mailto:cristian.correa.cs@gmail.com",
+      jobTitle: "Data Engineer",
+      description:
+        "Statistician and software engineer building production AI systems and data platforms. Creator of Kebo.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Bogotá",
+        addressCountry: "CO",
+      },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "Universidad El Bosque",
+      },
+      worksFor: [
+        {
+          "@type": "Organization",
+          name: "Kebo",
+          url: "https://kebo.app",
+        },
+        {
+          "@type": "Organization",
+          name: "Crafter Station",
+          url: "https://crafterstation.com",
+        },
+      ],
+      knowsAbout: [
+        "Artificial Intelligence",
+        "Large Language Models",
+        "Retrieval Augmented Generation",
+        "Data Engineering",
+        "dbt",
+        "Snowflake",
+        "BigQuery",
+        "TypeScript",
+        "Python",
+        "SQL",
+      ],
+      sameAs: [
+        "https://github.com/camilocbarrera",
+        "https://www.linkedin.com/in/cristiancamilocorrea/",
+        "https://x.com/camilocbarrera",
+        "https://www.instagram.com/cristiancorrea.xyz/",
+        "https://kebo.app",
+      ],
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://cris.fast/#profilepage",
+      url: "https://cris.fast",
+      name: "Cristian Correa, Data Engineer",
+      mainEntity: { "@id": "https://cris.fast/#person" },
+      inLanguage: "en",
+      isPartOf: { "@id": "https://cris.fast/#website" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://cris.fast/#website",
+      name: "cris.fast",
+      url: "https://cris.fast",
+      author: { "@id": "https://cris.fast/#person" },
+      inLanguage: "en",
+    },
   ],
-  sameAs: [
-    "https://github.com/camilocbarrera",
-    "https://www.linkedin.com/in/cristiancamilocorrea/",
-    "https://x.com/camilocbarrera",
-    "https://www.instagram.com/cristiancorrea.xyz/",
-    "https://kebo.app",
-  ],
-}
-
-const websiteJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "cris.fast",
-  url: "https://cris.fast",
-  author: { "@type": "Person", name: "Cristian Correa" },
-  inLanguage: "en",
 }
 
 export default function RootLayout({
@@ -143,14 +172,12 @@ export default function RootLayout({
         </Script>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <SiteHeader />
-        {children}
+        <div className="overflow-x-clip">
+          <SiteHeader />
+          {children}
+        </div>
         <ProgressiveBlur position="bottom" />
         <Analytics />
       </body>
