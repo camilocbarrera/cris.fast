@@ -31,14 +31,14 @@ const experience: Experience[] = [
   },
   {
     company: "Platzi",
-    role: "Data & Analytics Engineer",
+    role: "Data & Software Engineer",
     period: "May 2022 – Apr 2023",
     summary:
       "Led dbt project structure and CI/CD, migrated Redshift → BigQuery, built an offline feature store that cut training time in half.",
   },
   {
     company: "Rappi",
-    role: "Data & Analytics Engineer (Partner)",
+    role: "Data & Software Engineer (Partner)",
     period: "May 2020 – May 2022",
     summary:
       "Built the data foundation for Rappi Ads. Insights drove −50% churn and 6× revenue growth in 1.2 years.",
