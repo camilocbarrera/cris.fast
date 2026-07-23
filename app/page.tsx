@@ -20,7 +20,14 @@ const experience: Experience[] = [
     role: "AI, Data & Product",
     period: "Nov 2023 – Present",
     summary:
-      "AI products and data platforms. Some clients: El Tiempo, Spectrum Reach, Nubank.",
+      "AI products and data platforms. Some clients: El Tiempo, Spectrum Reach.",
+  },
+  {
+    company: "Nubank",
+    role: "Data & Software Engineer",
+    period: "2024 · 7 mos",
+    summary:
+      "Data for cashback on premium products at LATAM's largest digital bank.",
   },
   {
     company: "Platzi",
