@@ -103,7 +103,7 @@ export default function Page() {
             Cristian Correa
           </h1>
           <p className="mt-4 text-base text-muted-foreground text-pretty md:text-lg">
-            Data &amp; AI Engineer shipping production AI systems and data platforms.
+            Data Engineer shipping production AI systems and data platforms.
           </p>
           <div className="mt-6">
             <SocialLinks />

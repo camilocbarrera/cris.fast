@@ -24,16 +24,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://cris.fast"),
   title: {
-    default: "Cristian Correa, Data & AI Engineer",
+    default: "Cristian Correa, Data Engineer",
     template: "%s, Cristian Correa",
   },
   description:
-    "Cristian Correa (Cris), Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
+    "Cristian Correa (Cris), Data Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
   keywords: [
     "Cristian Correa",
     "Cris Correa",
     "Data Engineer",
-    "AI Engineer",
     "Kebo",
     "Crafter Station",
     "Bogotá",
@@ -49,9 +48,9 @@ export const metadata: Metadata = {
     canonical: "https://cris.fast",
   },
   openGraph: {
-    title: "Cristian Correa, Data & AI Engineer",
+    title: "Cristian Correa, Data Engineer",
     description:
-      "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
+      "Data Engineer from Bogotá, Colombia. Creator of Kebo. Building production AI systems and data platforms.",
     url: "https://cris.fast",
     siteName: "cris.fast",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Cristian Correa" }],
@@ -60,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cristian Correa, Data & AI Engineer",
+    title: "Cristian Correa, Data Engineer",
     description:
-      "Data & AI Engineer from Bogotá, Colombia. Creator of Kebo.",
+      "Data Engineer from Bogotá, Colombia. Creator of Kebo.",
     images: ["/og-twitter.png"],
     creator: "@camilocbarrera",
   },
@@ -88,7 +87,7 @@ const personJsonLd = {
   alternateName: ["Cris Correa", "Cris"],
   url: "https://cris.fast",
   image: "https://cris.fast/og.png",
-  jobTitle: "Data & AI Engineer",
+  jobTitle: "Data Engineer",
   description:
     "Statistician and software engineer building production AI systems and data platforms. Creator of Kebo.",
   address: {
