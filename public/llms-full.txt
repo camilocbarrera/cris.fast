@@ -1,34 +1,38 @@
 # Cristian Correa
 
-> Data & AI Engineer. Statistician and software engineer building production AI systems and data platforms. Creator of Kebo. Based in Bogotá, Colombia.
+> Data Engineer. Statistician and software engineer building production AI systems and data platforms. Creator of Kebo. Based in Bogotá, Colombia.
 
 ## Summary
 
-Cristian Correa (sometimes "Cris Correa" or just "Cris") is a software engineer and statistician with 8+ years of experience across fintech, ed-tech, ad-tech, and journalism. He builds AI products and data platforms, and ships production AI/ML systems with LLMs, RAG, and agentic workflows.
+Cristian Correa (sometimes "Cris Correa" or just "Cris") is a software engineer and statistician with a strong entrepreneurial mindset and 8+ years of experience across fintech, ed-tech, ad-tech, and journalism. He builds AI products and data platforms, and ships production AI/ML systems with LLMs, RAG, and agentic workflows.
 
 - **Name:** Cristian Correa
-- **Role:** Data & AI Engineer, Software Engineer, Statistician
+- **Role:** Data Engineer, Software Engineer, Statistician
 - **Location:** Bogotá, Colombia
 - **Site:** https://cris.fast
 - **Email:** cristian.correa.cs@gmail.com
 
 ## Currently
 
-- **Kebo** (https://kebo.app) — Open-source AI agent for personal finance. Main project since August 2024. 20k monthly active users, 100k+ downloads, 80k users across LATAM.
+- **Kebo** (https://kebo.app) — Open-source AI agent for personal finance. Main project since August 2024. 100k+ users across LATAM, 30k monthly active users.
 - **Crafter Station** (https://crafterstation.com) — Product engineering, since October 2025. Lima-based studio.
-- **Independent consulting** — AI products and data platforms. Past clients include El Tiempo, Spectrum Reach, Nubank.
+- **Independent consulting** — AI products and data platforms. Past clients include El Tiempo, Spectrum Reach.
 
 ## Experience
 
 ### Independent Consultant — AI, Data & Product
 *Nov 2023 – Present*
-AI products and data platforms. Selected clients: El Tiempo, Spectrum Reach, Nubank.
+AI products and data platforms. Selected clients: El Tiempo, Spectrum Reach.
 
-### Platzi — Data & Analytics Engineer
+### Nubank — Data & Software Engineer
+*2024, 7 months*
+Data for cashback on premium products at LATAM's largest digital bank.
+
+### Platzi — Data & Software Engineer
 *May 2022 – Apr 2023*
 Led dbt project structure and CI/CD. Migrated the data warehouse from Redshift to BigQuery. Built an offline feature store that cut model training time in half.
 
-### Rappi — Data & Analytics Engineer (Partner)
+### Rappi — Data & Software Engineer (Partner)
 *May 2020 – May 2022*
 Built the data foundation for Rappi Ads. Insights from that platform drove a 50% reduction in churn and 6× revenue growth in 1.2 years.
 
@@ -39,7 +43,7 @@ SAP BW / HANA implementations, BusinessObjects reporting, and a PHP–R integrat
 ## Selected Projects
 
 ### Kebo — https://kebo.app
-Open-source AI agent for personal finance. 20k MAU, 100k+ downloads, 80k users in LATAM.
+Open-source AI agent for personal finance. 100k+ users in LATAM, 30k MAU.
 
 ### Maca — https://maca.sh
 Blazing-fast voice-to-text. 5× productivity gain for writing workflows.
@@ -78,6 +82,7 @@ Design and visualize Apache Airflow DAGs from YAML definitions.
 - Ships fast.
 - Builds in public.
 - Open-source first.
+- Strong entrepreneurial mindset.
 
 ## Online Presence
 
