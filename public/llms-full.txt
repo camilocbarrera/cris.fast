@@ -1,28 +1,33 @@
 # Cristian Correa
 
-> Data Engineer. Statistician and software engineer building production AI systems and data platforms. Creator of Kebo. Based in Bogotá, Colombia.
+> Software engineer and statistician with deep roots in big data engineering. Based in Bogotá, Colombia.
+
+Last updated: 2026-08-03
 
 ## Summary
 
-Cristian Correa (sometimes "Cris Correa" or just "Cris") is a software engineer and statistician with a strong entrepreneurial mindset and 8+ years of experience across fintech, ed-tech, ad-tech, and journalism. He builds AI products and data platforms, and ships production AI/ML systems with LLMs, RAG, and agentic workflows.
+Cristian Correa (sometimes "Cris Correa" or just "Cris") is a software engineer and statistician with deep roots in big data engineering. He likes building products, is comfortable working with large amounts of data for ML and AI, loves real-time products, and loves taking things from zero to one. Eight years in tech.
 
 - **Name:** Cristian Correa
-- **Role:** Data Engineer, Software Engineer, Statistician
+- **Role:** Software Engineer, Statistician
 - **Location:** Bogotá, Colombia
 - **Site:** https://cris.fast
 - **Email:** cristian.correa.cs@gmail.com
 
 ## Currently
 
-- **Kebo** (https://kebo.app) — Open-source AI agent for personal finance. Main project since August 2024. 100k+ users across LATAM, 30k monthly active users.
+- **Croma** (https://usecroma.com) — Founder, since June 2026. API for government data.
 - **Crafter Station** (https://crafterstation.com) — Product engineering, since October 2025. Lima-based studio.
-- **Independent consulting** — AI products and data platforms. Past clients include El Tiempo, Spectrum Reach.
 
 ## Experience
 
-### Independent Consultant — AI, Data & Product
-*Nov 2023 – Present*
-AI products and data platforms. Selected clients: El Tiempo, Spectrum Reach.
+### Croma — Founder
+*Jun 2026 – Present* · https://usecroma.com
+API for government data.
+
+### Kebo — Founder
+*Aug 2024 – May 2026*
+Open-source AI financial agent for personal finance, used by 100k+ people in LATAM.
 
 ### Nubank — Data & Software Engineer
 *2024, 7 months*
@@ -30,20 +35,24 @@ Data for cashback on premium products at LATAM's largest digital bank.
 
 ### Platzi — Data & Software Engineer
 *May 2022 – Apr 2023*
-Led dbt project structure and CI/CD. Migrated the data warehouse from Redshift to BigQuery. Built an offline feature store that cut model training time in half.
+Worked on dbt project structure and CI/CD, helped migrate the warehouse from Redshift to BigQuery, and built an offline feature store.
 
-### Rappi — Data & Software Engineer (Partner)
+### Rappi — Data & Software Engineer
 *May 2020 – May 2022*
-Built the data foundation for Rappi Ads. Insights from that platform drove a 50% reduction in churn and 6× revenue growth in 1.2 years.
+Helped build the data foundation for Rappi Ads, including the keyword recommendation system for ads and the insights behind churn and revenue decisions.
 
 ### Azzorti — Data & Analytics, SAP BI
 *Oct 2018 – Jun 2020*
-SAP BW / HANA implementations, BusinessObjects reporting, and a PHP–R integration over SOAP.
+SAP BW and HANA implementations, BusinessObjects reporting, and a PHP–R integration over SOAP.
+
+### Taller de Carpintería — Carpenter
+*Jan 2010 – Dec 2018*
+Furniture and finishes at a local workshop in Bogotá. Started building things as a carpenter — same instinct, different material.
 
 ## Selected Projects
 
-### Kebo — https://kebo.app
-Open-source AI agent for personal finance. 100k+ users in LATAM, 30k MAU.
+### The Hackathon Company — https://www.hackathon.lat
+Build amazing hackathons with friends and great sponsors.
 
 ### Maca — https://maca.sh
 Blazing-fast voice-to-text. 5× productivity gain for writing workflows.
@@ -64,6 +73,19 @@ Design and visualize Apache Airflow DAGs from YAML definitions.
 - **mdtopdf.xyz** — WASM-based Markdown to PDF converter.
 - **not-grammarly.com** — Local desktop grammar tool.
 - **Adpt AI** (app.adptai.com) — 1st place, Llama Impact Hackathon Brazil, Nov 2024.
+
+## Honors & Awards
+
+- ElevenLabs Prize — Agents Hackathon Brazil (project: i18n), 2026
+- Online Winner — Platanus Hack '25 (project: Scrapi), 2025
+- 1st Place — Vercel AI Gateway Hackathon (project: Chess Battle), 2025
+- 1st Place — Llama Impact Hackathon (Meta), Nov 2024
+- 1st Place — University Project Fair (El Bosque University), Apr 2024
+- 1st Place — Web3 Startup World Cup Hackathon (Lumo & Pegasus Ventures), Nov 2023
+- 1st Place — University Project Fair (El Bosque University), Nov 2023
+- 2nd Place — Best Entrepreneurship Project (El Bosque University), Nov 2023
+- 1st Place — AI Fest Hackathon (Globant), Jun 2023
+- 1st Place — CTF Cybersecurity Competition (El Bosque University), Jun 2023
 
 ## Stack
 
