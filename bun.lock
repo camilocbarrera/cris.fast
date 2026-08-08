@@ -6,6 +6,7 @@
       "dependencies": {
         "@vercel/analytics": "1.3.1",
         "clsx": "^2.1.1",
+        "date-fns": "^4.4.0",
         "next": "16.0.10",
         "react": "19.2.0",
         "react-dom": "19.2.0",
@@ -101,6 +102,8 @@
     "clsx": ["clsx@2.1.1", "", {}, ""],
 
     "csstype": ["csstype@3.2.3", "", {}, ""],
+
+    "date-fns": ["date-fns@4.4.0", "", {}, "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="],
 
     "decompress-response": ["decompress-response@6.0.0", "", { "dependencies": { "mimic-response": "^3.1.0" } }, ""],
 
