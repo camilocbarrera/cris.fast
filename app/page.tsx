@@ -8,6 +8,7 @@ import {
 } from "@/components/layout/panel"
 import { Separator } from "@/components/layout/separator"
 import { SocialLinks } from "@/components/social-links"
+import { GithubContributions } from "@/components/github-contributions"
 
 type Experience = {
   company: string
@@ -240,6 +241,10 @@ export default function Page() {
             </p>
           </PanelContent>
         </Panel>
+
+        <Separator />
+
+        <GithubContributions />
 
         <Separator />
 
