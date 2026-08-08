@@ -32,6 +32,21 @@
   --line: color-mix(in oklab, var(--border) 64%, var(--background));
   --ring: oklch(0.63 0.08 55);
   --radius: 0.5rem;
+
+  /* gitmap — monochrome, built from the site palette (auto-adapts to dark) */
+  --gitmap-mono-empty: var(--muted);
+  --gitmap-mono-level-1: color-mix(in oklab, var(--foreground) 22%, var(--muted));
+  --gitmap-mono-level-2: color-mix(in oklab, var(--foreground) 42%, var(--muted));
+  --gitmap-mono-level-3: color-mix(in oklab, var(--foreground) 66%, var(--muted));
+  --gitmap-mono-level-4: color-mix(in oklab, var(--foreground) 92%, var(--muted));
+}
+
+[data-gitmap-theme="mono"] {
+  --gitmap-empty: var(--gitmap-mono-empty);
+  --gitmap-level-1: var(--gitmap-mono-level-1);
+  --gitmap-level-2: var(--gitmap-mono-level-2);
+  --gitmap-level-3: var(--gitmap-mono-level-3);
+  --gitmap-level-4: var(--gitmap-mono-level-4);
 }
 
 .dark {
@@ -66,6 +81,7 @@
 
   html {
     scrollbar-gutter: stable;
+    font-size: 112.5%; /* 18px base — scales all rem-based type/spacing up ~12.5% */
   }
 
   body {
