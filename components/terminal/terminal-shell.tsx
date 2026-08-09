@@ -4,6 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Terminal, type TerminalHandle } from "@wterm/react"
 import "@wterm/react/css"
 
+import {
+  contributionsUrl,
+  isContributionsData,
+  type ContributionsData,
+} from "@/lib/github-contributions"
 import { Shell, type ShellHost } from "./shell"
 
 export function TerminalShell() {
@@ -11,6 +16,9 @@ export function TerminalShell() {
   const shellRef = useRef<Shell | null>(null)
   const readyRef = useRef(false)
   const [failed, setFailed] = useState(false)
+
+  // One in-flight request per session, shared by repeated `contributions` runs.
+  const contributionsRef = useRef<Promise<ContributionsData | null> | null>(null)
 
   const hostRef = useRef<ShellHost>({
     write: (data) => handleRef.current?.write(data),
@@ -25,6 +33,32 @@ export function TerminalShell() {
     },
     navigate: (path) => {
       window.location.href = path
+    },
+    scrollToBottom: () => {
+      const el = handleRef.current?.instance?.element
+      if (!el) return
+      // wterm repaints on setTimeout(0) -> rAF, so queue behind that before
+      // measuring scrollHeight; the second frame catches reflow from the
+      // rows the repaint just added.
+      const pin = () => {
+        el.scrollTop = el.scrollHeight
+      }
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          pin()
+          requestAnimationFrame(pin)
+        })
+      }, 0)
+    },
+    fetchContributions: () => {
+      contributionsRef.current ??= fetch(contributionsUrl())
+        .then((res) => (res.ok ? res.json() : null))
+        .then((json: unknown) => (isContributionsData(json) ? json : null))
+        .catch((error: unknown) => {
+          console.error("[contributions] terminal fetch failed:", error)
+          return null
+        })
+      return contributionsRef.current
     },
   })
 
