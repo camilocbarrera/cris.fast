@@ -72,6 +72,67 @@
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
+/* wterm — a terminal theme built from the site palette, so it follows
+   light/dark automatically instead of shipping its own colors. */
+.wterm.theme-cris {
+  --term-bg: var(--background);
+  --term-fg: var(--foreground);
+  --term-cursor: var(--foreground);
+
+  --term-color-0: var(--background);
+  --term-color-1: oklch(0.55 0.17 25);
+  --term-color-2: oklch(0.52 0.11 150);
+  --term-color-3: oklch(0.6 0.12 75);
+  --term-color-4: oklch(0.53 0.13 255);
+  --term-color-5: oklch(0.53 0.16 325);
+  --term-color-6: oklch(0.55 0.08 200);
+  --term-color-7: var(--foreground);
+  --term-color-8: var(--muted-foreground);
+  --term-color-9: oklch(0.62 0.19 25);
+  --term-color-10: oklch(0.6 0.13 150);
+  --term-color-11: oklch(0.68 0.13 75);
+  --term-color-12: oklch(0.62 0.15 255);
+  --term-color-13: oklch(0.62 0.18 325);
+  --term-color-14: oklch(0.64 0.09 200);
+  --term-color-15: var(--foreground);
+
+  --term-font-family: var(--font-mono);
+  --term-font-size: 12.5px;
+  --term-line-height: 1.5;
+  --term-row-height: 19px;
+
+  padding: 10px 12px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.dark .wterm.theme-cris {
+  --term-color-1: oklch(0.72 0.16 25);
+  --term-color-2: oklch(0.75 0.14 150);
+  --term-color-3: oklch(0.83 0.13 85);
+  --term-color-4: oklch(0.72 0.12 255);
+  --term-color-5: oklch(0.74 0.14 325);
+  --term-color-6: oklch(0.79 0.09 200);
+  --term-color-8: var(--muted-foreground);
+  --term-color-9: oklch(0.79 0.17 25);
+  --term-color-10: oklch(0.82 0.15 150);
+  --term-color-11: oklch(0.88 0.13 85);
+  --term-color-12: oklch(0.79 0.13 255);
+  --term-color-13: oklch(0.81 0.15 325);
+  --term-color-14: oklch(0.85 0.09 200);
+}
+
+.wterm.theme-cris ::selection {
+  background: color-mix(in oklab, var(--foreground) 24%, transparent);
+}
+
+@media (min-width: 768px) {
+  .wterm.theme-cris {
+    --term-font-size: 13.5px;
+    --term-row-height: 21px;
+  }
+}
+
 @layer base {
   *,
   ::after,
