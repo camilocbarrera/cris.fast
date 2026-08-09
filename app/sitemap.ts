@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: "https://cris.fast/terminal",
+      url: "https://cris.fast/cli",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
