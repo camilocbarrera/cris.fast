@@ -23,7 +23,7 @@ Last updated: 2026-08-03
 - [DAG Sketch](https://dag.cris.fast): Design and visualize Airflow DAGs from YAML.
 
 ## On this site
-- [Terminal](https://cris.fast/terminal): the same profile as an interactive shell — `help`, `about`, `experience`, `projects`, `awards`, `neofetch`.
+- [CLI](https://cris.fast/cli): the same profile as an interactive terminal — `help`, `about`, `experience`, `projects`, `awards`, `neofetch`.
 
 ## Links
 - [GitHub](https://github.com/camilocbarrera)
