@@ -22,11 +22,11 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-1">
           <a
-            href="/terminal"
+            href="/cli"
             className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 font-mono text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             <span aria-hidden>$</span>
-            terminal
+            cli
           </a>
           <ThemeToggle className="size-8" />
         </div>
