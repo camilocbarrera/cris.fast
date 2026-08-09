@@ -26,6 +26,8 @@ import {
   skills,
   socials,
 } from "@/lib/profile"
+import type { ContributionsData } from "@/lib/github-contributions"
+import { renderHeatmap } from "./heatmap"
 
 export type Theme = "light" | "dark"
 
@@ -36,6 +38,9 @@ export interface ShellHost {
   getTheme(): Theme
   setTheme(theme: Theme): void
   navigate(path: string): void
+  fetchContributions(): Promise<ContributionsData | null>
+  /** Pin the view to the newest output, even if the reader scrolled up. */
+  scrollToBottom(): void
 }
 
 type Command = {
@@ -44,7 +49,7 @@ type Command = {
   usage?: string
   summary: string
   hidden?: boolean
-  run(args: string[], shell: Shell): string[]
+  run(args: string[], shell: Shell): string[] | Promise<string[]>
 }
 
 const FILES = [
@@ -53,6 +58,7 @@ const FILES = [
   "projects.txt",
   "awards.txt",
   "skills.txt",
+  "contributions.txt",
   "contact.txt",
   "social.txt",
   ".secret",
@@ -96,6 +102,9 @@ export class Shell {
   private historyIndex = -1
   private draft = ""
   private lastChar = ""
+
+  private busy = false
+  private pending: string[] = []
 
   private booting = true
   private bootTimer: ReturnType<typeof setTimeout> | null = null
@@ -144,6 +153,7 @@ export class Shell {
     this.booting = false
     this.println("")
     this.renderPrompt()
+    this.host.scrollToBottom()
 
     const queued = this.bootQueue.join("")
     this.bootQueue = []
@@ -163,6 +173,12 @@ export class Shell {
 
   input(data: string) {
     if (this.disposed) return
+
+    // An async command owns the screen until it resolves.
+    if (this.busy) {
+      this.pending.push(data)
+      return
+    }
 
     if (this.booting) {
       // Any keypress skips the animation; real characters are replayed after.
@@ -238,10 +254,10 @@ export class Shell {
   private handleChar(ch: string) {
     switch (ch) {
       case "\r":
-        this.submit()
+        void this.submit()
         return
       case "\n":
-        if (this.lastChar !== "\r") this.submit()
+        if (this.lastChar !== "\r") void this.submit()
         return
       case "\x7f": // backspace
       case "\b":
@@ -262,10 +278,10 @@ export class Shell {
         return
       case "\x04": // ctrl-d
         if (this.buffer.length === 0) {
-          this.println("")
-          this.printLines(this.runCommand("exit", []))
-          this.println("")
-          this.renderPrompt()
+          this.buffer = "exit"
+          this.cursor = this.buffer.length
+          this.renderLine()
+          void this.submit()
         }
         return
       case "\x0c": // ctrl-l
@@ -356,7 +372,7 @@ export class Shell {
 
   // ---------------------------------------------------------------- execution
 
-  private submit() {
+  private async submit() {
     const line = this.buffer
     this.host.write("\r\n")
     this.resetLine()
@@ -367,7 +383,22 @@ export class Shell {
         this.history.push(trimmed)
       }
       const [name, ...args] = tokenize(trimmed)
-      const output = this.runCommand(name, args)
+
+      // Commands may be async (network). Hold input while one runs, the same
+      // way a real shell does, then replay whatever was typed meanwhile.
+      const result = this.runCommand(name, args)
+      let output: string[]
+      if (result instanceof Promise) {
+        this.busy = true
+        try {
+          output = await result
+        } finally {
+          this.busy = false
+        }
+      } else {
+        output = result
+      }
+
       if (output.length) {
         this.println("")
         this.printLines(output)
@@ -376,9 +407,14 @@ export class Shell {
     }
 
     this.renderPrompt()
+    this.host.scrollToBottom()
+
+    const queued = this.pending.join("")
+    this.pending = []
+    if (queued) this.input(queued)
   }
 
-  private runCommand(name: string, args: string[]): string[] {
+  private runCommand(name: string, args: string[]): string[] | Promise<string[]> {
     if (name === "clear" || name === "cls") {
       this.host.write(CLEAR_SCREEN)
       return []
@@ -655,6 +691,20 @@ export class Shell {
       return out
     }
 
+    const contributionsLines = async (args: string[] = []): Promise<string[]> => {
+      const fullYear = args.includes("--year") || args.includes("-y")
+      const data = await this.host.fetchContributions()
+      if (!data) {
+        return [
+          `${yellow("contributions:")} GitHub activity is unavailable right now.`,
+          dim("the upstream API rate-limits by IP — try again in a moment"),
+        ]
+      }
+      return renderHeatmap(data, this.contentWidth(), this.host.getTheme(), {
+        fullYear,
+      })
+    }
+
     const contactLines = (): string[] => [
       ...heading("contact"),
       "",
@@ -759,6 +809,13 @@ export class Shell {
         run: skillLines,
       },
       {
+        name: "contributions",
+        aliases: ["gitmap", "activity", "github"],
+        usage: "contributions [--year]",
+        summary: "GitHub activity heatmap",
+        run: (args) => contributionsLines(args),
+      },
+      {
         name: "contact",
         aliases: ["email"],
         summary: "how to reach me",
@@ -854,6 +911,8 @@ export class Shell {
               return awardLines()
             case "skills.txt":
               return skillLines()
+            case "contributions.txt":
+              return contributionsLines()
             case "contact.txt":
               return contactLines()
             case "social.txt":
@@ -864,7 +923,7 @@ export class Shell {
                 "",
                 ...wrapAnsi(
                   gray(
-                    "Before software I spent eight years as a carpenter in Bogotá, building furniture with my hands. Same instinct, different material.",
+                    "Before software I spent four years as a carpenter in Bogotá, building furniture with my hands. Same instinct, different material.",
                   ),
                   this.contentWidth(),
                 ),
