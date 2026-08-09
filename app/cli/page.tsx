@@ -33,7 +33,8 @@ export default function CliPage() {
         </h1>
 
         <div className="screen-line-bottom relative border-x border-line p-2">
-          <div className="h-[calc(100dvh-5rem)] min-h-[320px]">
+          {/* Fills the viewport, but capped so it stops growing on tall displays. */}
+          <div className="h-[calc(100dvh-5rem)] max-h-[720px] min-h-[320px]">
             {/* Static fallback for no-JS clients; wterm replaces it on boot. */}
             <noscript>
               <div className="flex h-full items-center justify-center p-6 text-center font-mono text-sm text-muted-foreground">
