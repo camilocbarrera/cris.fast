@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og"
 import { profile } from "@/lib/profile"
 
 export const OG_SIZE = { width: 1200, height: 630 }
-export const OG_ALT = `${profile.name} — profile as a terminal`
+export const OG_ALT = `cris cli — ${profile.name}'s profile as a terminal`
 
 /**
  * Hex mirrors of the site's oklch tokens and the `theme-cris` terminal palette.
@@ -143,7 +143,7 @@ export async function renderTerminalOg() {
               color: MUTED,
             }}
           >
-            <span style={{ display: "flex" }}>{profile.site} — terminal</span>
+            <span style={{ display: "flex" }}>{profile.site} — cli</span>
             <span style={{ display: "flex", color: MUTED }}>80×24</span>
           </div>
 
