@@ -87,7 +87,7 @@ export const experience: Experience[] = [
   {
     company: "Taller de Carpintería",
     role: "Carpenter",
-    period: "Jan 2010 – Dec 2018",
+    period: "2014 – 2018",
     summary:
       "Furniture and finishes at a local workshop in Bogotá. I started building things as a carpenter — same instinct, different material.",
   },
