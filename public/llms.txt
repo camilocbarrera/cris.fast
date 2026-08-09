@@ -22,6 +22,9 @@ Last updated: 2026-08-03
 - [SQL4All](https://sql4all.org): Free interactive SQL learning for Spanish speakers, PGlite in the browser.
 - [DAG Sketch](https://dag.cris.fast): Design and visualize Airflow DAGs from YAML.
 
+## On this site
+- [Terminal](https://cris.fast/terminal): the same profile as an interactive shell — `help`, `about`, `experience`, `projects`, `awards`, `neofetch`.
+
 ## Links
 - [GitHub](https://github.com/camilocbarrera)
 - [LinkedIn](https://www.linkedin.com/in/cristiancamilocorrea/)
