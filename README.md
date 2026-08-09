@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+![cris.fast](public/og.png)
 
-First, run the development server:
+# cris.fast
+
+My portfolio, in two flavours: a quiet typographic site — and the same profile as a **real terminal**.
+
+[**cris.fast**](https://cris.fast) &nbsp;·&nbsp; [**cris.fast/cli**](https://cris.fast/cli)
+
+</div>
+
+---
+
+## Two ways in
+
+**`/`** — a spare, serif, hairline-bordered page. Experience, projects, awards, and a GitHub contributions heatmap.
+
+**`/cli`** — the whole thing as a shell you can actually type into. Not a fake prompt: it runs on [wterm](https://wterm.dev), a VT/xterm emulator written in Zig and compiled to WebAssembly, rendered to the DOM.
+
+```
+~$ help
+~$ experience
+~$ contributions
+~$ open maca
+```
+
+Tab completion, `↑ ↓` history, `ctrl+a/e/u/k/w/l/c/d`, "did you mean" suggestions, and a contributions heatmap drawn with ANSI grayscale tiles. Try `neofetch`. There's an easter egg in `ls -a`.
+
+## Make it yours
+
+Every piece of profile content lives in one file:
+
+```
+lib/profile.ts     ← name, bio, experience, projects, awards, skills, socials
+```
+
+Both the GUI and the CLI read from it, so they can't drift apart. Fork, edit that file, swap the logos in `public/logos/`, and you have your own.
+
+## Stack
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · Bun · Vercel
+
+Type is Instrument Serif + Geist Mono. Social cards for `/cli` are generated at build time with `next/og`. No CMS, no database — every page is prerendered, and the contributions panel revalidates hourly.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun run build        # production build
+bunx tsc --noEmit    # typecheck
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+app/
+  page.tsx              landing
+  cli/                  terminal page + dynamic OG card
+components/
+  terminal/             shell engine, ANSI helpers, heatmap renderer
+  ui/gitmap.tsx         contributions heatmap (GUI)
+lib/profile.ts          all profile content
+```
 
-To learn more about Next.js, take a look at the following resources:
+The shell (`components/terminal/shell.ts`) is plain TypeScript with no framework imports — it talks to the page through a small `ShellHost` interface, so it can be driven headlessly in tests.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## One quirk worth knowing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributions come from a free community API that rate-limits by IP, and Vercel's shared egress addresses get throttled — so the server fetch can fail in production while working fine everywhere else. The panel handles it: it tries server-side first (logged, never swallowed), and falls back to fetching from the visitor's own browser. If you fork this, that's why the code looks the way it does.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<div align="center">
+<sub>Built by <a href="https://cris.fast">Cristian Correa</a> · Bogotá, Colombia</sub>
+</div>
